@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Dashboard - Locked | Acadryx</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Color palette - locked/greyed theme */
+            --primary: #718096;
+            --primary-light: #a0aec0;
+            --primary-dark: #4a5568;
+            --secondary: #718096;
+            --accent: #a0aec0;
+            
+            /* Neutral palette - muted for locked state */
+            --dark: #4a5568;
+            --dark-gray: #718096;
+            --gray: #a0aec0;
+            --light-gray: #e2e8f0;
+            --light: #f7fafc;
+            --white: #ffffff;
+            
+            /* Locked state colors */
+            --locked: #a0aec0;
+            --locked-light: #edf2f7;
+            --locked-dark: #718096;
+            
+            /* UI elements */
+            --border-radius: 8px;
+            --border-radius-sm: 6px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.07);
+            --transition: all 0.3s ease;
+            
+            /* Typography */
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--dark);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-name {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .logo-tagline {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 3px;
+            letter-spacing: 0.5px;
+        }
+        
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-dark);
+            gap: 12px;
+        }
+        
+        /* Locked State Banner */
+        .locked-banner {
+            background: linear-gradient(90deg, var(--locked) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin: 20px 0 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .locked-banner-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .locked-icon {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .locked-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .locked-subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+        
+        /* Alumni Badge */
+        .alumni-badge-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .alumni-badge {
+            background: linear-gradient(135deg, var(--locked-light) 0%, var(--light-gray) 100%);
+            border: 2px solid var(--locked);
+            border-radius: var(--border-radius);
+            padding: 25px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .badge-icon {
+            font-size: 3.5rem;
+            color: var(--locked);
+        }
+        
+        .badge-content {
+            flex: 1;
+        }
+        
+        .badge-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        
+        .badge-text {
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+        
+        .badge-text strong {
+            color: var(--dark);
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        /* Locked Sections */
+        .locked-section {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            opacity: 0.85;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .locked-section:hover {
+            box-shadow: var(--shadow-md);
+            opacity: 0.9;
+        }
+        
+        .section-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid var(--light-gray);
+            background-color: var(--locked-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .section-icon {
+            font-size: 2.5rem;
+            color: var(--locked);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius);
+            background-color: white;
+            margin-bottom: 15px;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        
+        .section-subtitle {
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+        
+        .section-status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: white;
+            color: var(--locked);
+            border: 1px solid var(--locked);
+        }
+        
+        .section-body {
+            padding: 25px;
+            position: relative;
+        }
+        
+        .section-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            z-index: 2;
+        }
+        
+        .overlay-icon {
+            font-size: 3rem;
+            color: var(--locked);
+            margin-bottom: 20px;
+        }
+        
+        .overlay-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .overlay-text {
+            color: var(--dark-gray);
+            line-height: 1.6;
+            max-width: 300px;
+        }
+        
+        .section-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--locked);
+        }
+        
+        .feature-icon {
+            color: var(--locked);
+            font-size: 1.3rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 50%;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .feature-text {
+            color: var(--dark-gray);
+            flex: 1;
+        }
+        
+        /* Activation Message */
+        .activation-message {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            max-width: 900px;
+            margin: 0 auto 50px;
+            border-top: 4px solid var(--locked);
+            text-align: center;
+        }
+        
+        .activation-icon {
+            font-size: 4rem;
+            color: var(--locked);
+            margin-bottom: 20px;
+        }
+        
+        .activation-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .activation-text {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .activation-steps {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 200px;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--locked-light);
+            color: var(--locked);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border: 2px solid var(--locked);
+        }
+        
+        .step-text {
+            color: var(--dark-gray);
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--light-gray);
+            padding: 40px 0 25px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .footer-link {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        
+        .footer-link:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .locked-title {
+                font-size: 1.9rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .locked-banner {
+                padding: 25px 20px;
+            }
+            
+            .locked-title {
+                font-size: 1.7rem;
+            }
+            
+            .locked-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .alumni-badge {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px;
+            }
+            
+            .activation-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .locked-title {
+                font-size: 1.5rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header, .section-body {
+                padding: 20px;
+            }
+            
+            .activation-message {
+                padding: 30px 20px;
+            }
+            
+            .activation-title {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="student-dashboard.html" class="logo">
+                <i class="fas fa-university logo-icon"></i>
+                <div class="logo-text">
+                    <div class="logo-name">Acadryx</div>
+                    <div class="logo-tagline">Alumni Dashboard</div>
+                </div>
+            </a>
+            
+            <a href="student-dashboard.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Student Dashboard
+            </a>
+        </div>
+    </header>
+
+    <!-- Locked State Banner -->
+    <div class="container">
+        <div class="locked-banner">
+            <div class="locked-banner-content">
+                <i class="fas fa-lock locked-icon"></i>
+                <h1 class="locked-title">Alumni Dashboard - Locked</h1>
+                <p class="locked-subtitle">
+                    Your alumni account will activate automatically upon graduation. This preview shows the features you'll unlock as an alumnus.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alumni Badge -->
+    <div class="container">
+        <div class="alumni-badge-container">
+            <div class="alumni-badge">
+                <i class="fas fa-user-graduate badge-icon"></i>
+                <div class="badge-content">
+                    <h2 class="badge-title">Future Alumni Status</h2>
+                    <p class="badge-text">
+                        <strong>Current Status:</strong> Student (Class of 2024)<br>
+                        <strong>Alumni Activation:</strong> Automatic upon graduation confirmation<br>
+                        <strong>Account Type:</strong> Student account will transition to permanent alumni account
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Locked Dashboard Sections -->
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- Network Section -->
+            <div class="locked-section">
+                <div class="section-header">
+                    <div>
+                        <div class="section-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h2 class="section-title">Alumni Network</h2>
+                        <p class="section-subtitle">Connect with graduates from your institution</p>
+                    </div>
+                    <div class="section-status">Locked</div>
+                </div>
+                
+                <div class="section-body">
+                    <div class="section-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="feature-text">Search and connect with alumni by graduation year, location, or industry</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="feature-text">Participate in alumni-only discussions and forums</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="feature-text">Join regional alumni chapters and special interest groups</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-overlay">
+                        <i class="fas fa-lock overlay-icon"></i>
+                        <h3 class="overlay-title">Network Locked</h3>
+                        <p class="overlay-text">The alumni networking features will unlock automatically when your graduation is confirmed.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mentorship Section -->
+            <div class="locked-section">
+                <div class="section-header">
+                    <div>
+                        <div class="section-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h2 class="section-title">Mentorship Program</h2>
+                        <p class="section-subtitle">Give or receive guidance within the alumni community</p>
+                    </div>
+                    <div class="section-status">Locked</div>
+                </div>
+                
+                <div class="section-body">
+                    <div class="section-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="feature-text">Find alumni mentors in your field of interest</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="feature-text">Offer mentorship to current students or recent graduates</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="feature-text">Schedule virtual or in-person mentoring sessions</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-overlay">
+                        <i class="fas fa-lock overlay-icon"></i>
+                        <h3 class="overlay-title">Mentorship Locked</h3>
+                        <p class="overlay-text">Mentorship features activate when you become an alumnus, allowing you to both give and receive guidance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Opportunities Section -->
+            <div class="locked-section">
+                <div class="section-header">
+                    <div>
+                        <div class="section-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h2 class="section-title">Career Opportunities</h2>
+                        <p class="section-subtitle">Exclusive job postings and career resources</p>
+                    </div>
+                    <div class="section-status">Locked</div>
+                </div>
+                
+                <div class="section-body">
+                    <div class="section-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-search-dollar"></i>
+                            </div>
+                            <div class="feature-text">Access alumni-exclusive job board with vetted opportunities</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="feature-text">Browse internships and entry-level positions posted by alumni employers</div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-text">Career development resources and skill-building workshops</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-overlay">
+                        <i class="fas fa-lock overlay-icon"></i>
+                        <h3 class="overlay-title">Opportunities Locked</h3>
+                        <p class="overlay-text">Career resources are reserved for alumni to ensure high-quality, relevant opportunities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activation Message -->
+    <div class="container">
+        <div class="activation-message">
+            <i class="fas fa-graduation-cap activation-icon"></i>
+            <h2 class="activation-title">This account activates automatically upon graduation</h2>
+            <p class="activation-text">
+                Your student account will transition to a permanent alumni account once your graduation is confirmed by your institution. 
+                No action is required on your part—this process happens automatically, preserving your academic history and connections.
+            </p>
+            
+            <div class="activation-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Complete your academic program</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">School confirms graduation status</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Account automatically transitions to alumni status</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">Full alumni features unlocked permanently</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Acadryx</div>
+                    <p class="footer-tagline">Alumni Platform - Preview Mode</p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="alumniInfoLink">Alumni Information</a>
+                    <a href="#" class="footer-link" id="graduationTimelineLink">Graduation Timeline</a>
+                    <a href="#" class="footer-link" id="futureBenefitsLink">Future Benefits</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Acadryx. Alumni accounts are permanent and activate automatically upon graduation confirmation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to show locked feature alert
+        function showLockedAlert(sectionName) {
+            alert(`Alumni Feature Locked: ${sectionName}\n\nThis feature is part of the alumni dashboard and will unlock automatically when your graduation is confirmed.\n\nAs an alumnus, you'll gain access to:\n• Permanent account status\n• Networking with fellow graduates\n• Career resources and mentorship\n• Lifelong connection to your institution\n\nNo action is required—this transition happens automatically.`);
+        }
+        
+        // Add click handlers to all locked sections
+        document.querySelectorAll('.locked-section').forEach(section => {
+            section.addEventListener('click', function() {
+                const sectionTitle = this.querySelector('.section-title').textContent;
+                showLockedAlert(sectionTitle);
+            });
+        });
+        
+        // Add click handler to alumni badge
+        document.querySelector('.alumni-badge').addEventListener('click', function() {
+            alert("Future Alumni Status\n\nYour current account is in student mode. Upon graduation confirmation by your institution, it will automatically transition to alumni status with permanent access to:\n\n• Alumni networking features\n• Career resources and job board\n• Mentorship programs\n• Institution updates and events\n\nThis process is automatic and requires no action from you.");
+        });
+        
+        // Footer link actions
+        document.getElementById('alumniInfoLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Alumni Information\n\nPlaceholder: This would provide detailed information about alumni benefits, account transition process, and frequently asked questions.");
+        });
+        
+        document.getElementById('graduationTimelineLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Graduation Timeline\n\nPlaceholder: This would explain the graduation confirmation process and typical timeline for account transition to alumni status.");
+        });
+        
+        document.getElementById('futureBenefitsLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Future Alumni Benefits\n\nPlaceholder: This would detail the complete range of benefits available to alumni, including networking, career resources, and continued access to institutional materials.");
+        });
+        
+        // Update copyright year automatically
+        document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Acadryx. Alumni accounts are permanent and activate automatically upon graduation confirmation.`;
+        
+        // Log locked state
+        console.log("Alumni Dashboard - Locked State Preview");
+        console.log("All alumni features are disabled until graduation confirmation.");
+        console.log("Account will transition automatically from student to alumni status.");
+    </script>
+</body>
+</html>

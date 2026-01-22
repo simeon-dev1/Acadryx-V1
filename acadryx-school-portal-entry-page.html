@@ -1,0 +1,890 @@
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>School Portal - Institution Login & Registration | Acadryx</title>
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	    <style>
+	        /* CSS Reset and Base Variables */
+	        * {
+	            margin: 0;
+	            padding: 0;
+	            box-sizing: border-box;
+	        }
+	        
+	        :root {
+	            /* Primary color palette - enterprise, trustworthy */
+	            --primary: #1a365d;
+	            --primary-light: #2d4a8c;
+	            --primary-dark: #0d243f;
+	            --secondary: #0c4b33;
+	            --secondary-light: #1a7d5e;
+	            --accent: #c05621;
+	            --accent-light: #dd6b20;
+	            
+	            /* Neutral palette */
+	            --dark: #2d3748;
+	            --dark-gray: #4a5568;
+	            --gray: #718096;
+	            --light-gray: #e2e8f0;
+	            --light: #f7fafc;
+	            --white: #ffffff;
+	            
+	            /* Status colors */
+	            --pending: #d69e2e;
+	            --pending-light: #fefcbf;
+	            --success: #38a169;
+	            --success-light: #c6f6d5;
+	            
+	            /* UI elements */
+	            --border-radius: 6px;
+	            --border-radius-sm: 4px;
+	            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+	            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+	            --transition: all 0.2s ease;
+	            
+	            /* Typography */
+	            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+	            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+	        }
+	        
+	        body {
+	            font-family: var(--font-body);
+	            color: var(--dark);
+	            background-color: var(--white);
+	            line-height: 1.6;
+	            min-height: 100vh;
+	            display: flex;
+	            flex-direction: column;
+	        }
+	        
+	        .container {
+	            width: 100%;
+	            max-width: 1200px;
+	            margin: 0 auto;
+	            padding: 0 20px;
+	        }
+	        
+	        /* Header */
+	        .header {
+	            background-color: var(--white);
+	            box-shadow: var(--shadow);
+	            padding: 20px 0;
+	            border-bottom: 1px solid var(--light-gray);
+	        }
+	        
+	        .header-container {
+	            display: flex;
+	            justify-content: space-between;
+	            align-items: center;
+	        }
+	        
+	        .logo {
+	            display: flex;
+	            align-items: center;
+	            text-decoration: none;
+	        }
+	        
+	        .logo-icon {
+	            font-size: 2.5rem;
+	            color: var(--primary);
+	            margin-right: 12px;
+	        }
+	        
+	        .logo-text {
+	            display: flex;
+	            flex-direction: column;
+	        }
+	        
+	        .logo-name {
+	            font-family: var(--font-heading);
+	            font-size: 1.8rem;
+	            font-weight: 700;
+	            color: var(--primary);
+	            line-height: 1;
+	        }
+	        
+	        .logo-tagline {
+	            font-size: 0.85rem;
+	            color: var(--gray);
+	            margin-top: 4px;
+	            letter-spacing: 0.5px;
+	        }
+	        
+	        .back-link {
+	            color: var(--primary);
+	            text-decoration: none;
+	            font-weight: 500;
+	            font-size: 1.05rem;
+	            transition: var(--transition);
+	            display: flex;
+	            align-items: center;
+	            gap: 8px;
+	        }
+	        
+	        .back-link:hover {
+	            color: var(--primary-light);
+	            gap: 12px;
+	        }
+	        
+	        /* Main Content */
+	        .main-content {
+	            flex: 1;
+	            padding: 40px 0;
+	            background-color: var(--light);
+	        }
+	        
+	        .portal-title {
+	            text-align: center;
+	            margin-bottom: 50px;
+	        }
+	        
+	        .portal-title h1 {
+	            font-family: var(--font-heading);
+	            font-size: 2.5rem;
+	            color: var(--primary);
+	            margin-bottom: 10px;
+	        }
+	        
+	        .portal-title p {
+	            color: var(--dark-gray);
+	            font-size: 1.1rem;
+	            max-width: 700px;
+	            margin: 0 auto;
+	        }
+	        
+	        /* Portal Sections Container */
+	        .portal-sections {
+	            display: grid;
+	            grid-template-columns: 1fr 1fr;
+	            gap: 40px;
+	            margin-bottom: 60px;
+	        }
+	        
+	        /* Common Card Styles */
+	        .portal-card {
+	            background-color: var(--white);
+	            border-radius: var(--border-radius);
+	            box-shadow: var(--shadow-md);
+	            overflow: hidden;
+	            transition: var(--transition);
+	            height: 100%;
+	            display: flex;
+	            flex-direction: column;
+	        }
+	        
+	        .portal-card:hover {
+	            box-shadow: var(--shadow-lg);
+	        }
+	        
+	        .card-header {
+	            padding: 30px 30px 20px;
+	            border-bottom: 1px solid var(--light-gray);
+	        }
+	        
+	        .card-icon {
+	            font-size: 2.8rem;
+	            margin-bottom: 15px;
+	        }
+	        
+	        .login-card .card-icon {
+	            color: var(--primary);
+	        }
+	        
+	        .register-card .card-icon {
+	            color: var(--secondary);
+	        }
+	        
+	        .card-title {
+	            font-family: var(--font-heading);
+	            font-size: 1.8rem;
+	            color: var(--primary-dark);
+	            margin-bottom: 8px;
+	        }
+	        
+	        .card-subtitle {
+	            color: var(--dark-gray);
+	            font-size: 1rem;
+	        }
+	        
+	        .card-body {
+	            padding: 30px;
+	            flex: 1;
+	        }
+	        
+	        /* Form Styles */
+	        .portal-form {
+	            margin-bottom: 25px;
+	        }
+	        
+	        .form-group {
+	            margin-bottom: 22px;
+	        }
+	        
+	        .form-label {
+	            display: block;
+	            margin-bottom: 8px;
+	            font-weight: 600;
+	            color: var(--dark);
+	            font-size: 1.05rem;
+	        }
+	        
+	        .form-label .required {
+	            color: var(--accent);
+	        }
+	        
+	        .form-input {
+	            width: 100%;
+	            padding: 14px 16px;
+	            border: 1px solid var(--light-gray);
+	            border-radius: var(--border-radius);
+	            font-size: 1rem;
+	            color: var(--dark);
+	            transition: var(--transition);
+	            background-color: var(--light);
+	        }
+	        
+	        .form-input:focus {
+	            outline: none;
+	            border-color: var(--primary);
+	            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+	        }
+	        
+	        .form-input::placeholder {
+	            color: var(--gray);
+	        }
+	        
+	        .form-help {
+	            display: flex;
+	            align-items: center;
+	            gap: 8px;
+	            margin-top: 8px;
+	            color: var(--dark-gray);
+	            font-size: 0.9rem;
+	        }
+	        
+	        .form-help i {
+	            color: var(--accent);
+	        }
+	        
+	        /* Buttons */
+	        .portal-button {
+	            width: 100%;
+	            padding: 16px;
+	            border: none;
+	            border-radius: var(--border-radius);
+	            font-size: 1.1rem;
+	            font-weight: 600;
+	            cursor: pointer;
+	            transition: var(--transition);
+	            display: flex;
+	            align-items: center;
+	            justify-content: center;
+	            gap: 12px;
+	        }
+	        
+	        .login-button {
+	            background-color: var(--primary);
+	            color: var(--white);
+	        }
+	        
+	        .login-button:hover {
+	            background-color: var(--primary-light);
+	            transform: translateY(-2px);
+	            box-shadow: var(--shadow-md);
+	        }
+	        
+	        .register-button {
+	            background-color: var(--secondary);
+	            color: var(--white);
+	        }
+	        
+	        .register-button:hover {
+	            background-color: var(--secondary-light);
+	            transform: translateY(-2px);
+	            box-shadow: var(--shadow-md);
+	        }
+	        
+	        /* Verification Notice */
+	        .verification-notice {
+	            background-color: var(--pending-light);
+	            border-radius: var(--border-radius);
+	            padding: 25px;
+	            margin-top: 30px;
+	            border-left: 4px solid var(--pending);
+	        }
+	        
+	        .verification-header {
+	            display: flex;
+	            align-items: center;
+	            gap: 12px;
+	            margin-bottom: 15px;
+	        }
+	        
+	        .verification-icon {
+	            font-size: 1.8rem;
+	            color: var(--pending);
+	        }
+	        
+	        .verification-title {
+	            font-family: var(--font-heading);
+	            font-size: 1.4rem;
+	            color: var(--dark);
+	        }
+	        
+	        .verification-text {
+	            color: var(--dark);
+	            margin-bottom: 15px;
+	            line-height: 1.7;
+	        }
+	        
+	        .verification-steps {
+	            margin-left: 20px;
+	            margin-top: 15px;
+	        }
+	        
+	        .verification-steps li {
+	            margin-bottom: 10px;
+	            position: relative;
+	            padding-left: 25px;
+	        }
+	        
+	        .verification-steps li:before {
+	            content: counter(step);
+	            counter-increment: step;
+	            position: absolute;
+	            left: 0;
+	            top: 0;
+	            background-color: var(--pending);
+	            color: white;
+	            width: 20px;
+	            height: 20px;
+	            border-radius: 50%;
+	            display: flex;
+	            align-items: center;
+	            justify-content: center;
+	            font-size: 0.8rem;
+	            font-weight: bold;
+	        }
+	        
+	        /* Additional Information */
+	        .additional-info {
+	            background-color: var(--white);
+	            border-radius: var(--border-radius);
+	            padding: 40px;
+	            box-shadow: var(--shadow);
+	            max-width: 900px;
+	            margin: 0 auto;
+	        }
+	        
+	        .info-title {
+	            font-family: var(--font-heading);
+	            font-size: 1.8rem;
+	            color: var(--primary);
+	            margin-bottom: 20px;
+	            text-align: center;
+	        }
+	        
+	        .info-grid {
+	            display: grid;
+	            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	            gap: 30px;
+	            margin-top: 30px;
+	        }
+	        
+	        .info-item {
+	            text-align: center;
+	            padding: 20px;
+	        }
+	        
+	        .info-item i {
+	            font-size: 2.5rem;
+	            color: var(--primary);
+	            margin-bottom: 15px;
+	        }
+	        
+	        .info-item h4 {
+	            font-family: var(--font-heading);
+	            font-size: 1.3rem;
+	            color: var(--dark);
+	            margin-bottom: 10px;
+	        }
+	        
+	        .info-item p {
+	            color: var(--dark-gray);
+	            font-size: 0.95rem;
+	        }
+	        
+	        /* Footer */
+	        .footer {
+	            background-color: var(--primary-dark);
+	            color: var(--light-gray);
+	            padding: 40px 0 25px;
+	            margin-top: auto;
+	        }
+	        
+	        .footer-content {
+	            display: flex;
+	            justify-content: space-between;
+	            align-items: center;
+	            flex-wrap: wrap;
+	            margin-bottom: 30px;
+	        }
+	        
+	        .footer-logo {
+	            font-family: var(--font-heading);
+	            font-size: 1.8rem;
+	            font-weight: 700;
+	            color: var(--white);
+	            margin-bottom: 10px;
+	        }
+	        
+	        .footer-tagline {
+	            color: rgba(255, 255, 255, 0.8);
+	            font-size: 0.9rem;
+	            max-width: 300px;
+	        }
+	        
+	        .footer-links {
+	            display: flex;
+	            gap: 25px;
+	        }
+	        
+	        .footer-link {
+	            color: var(--light-gray);
+	            text-decoration: none;
+	            transition: var(--transition);
+	            font-size: 0.95rem;
+	        }
+	        
+	        .footer-link:hover {
+	            color: var(--white);
+	            text-decoration: underline;
+	        }
+	        
+	        .footer-bottom {
+	            text-align: center;
+	            padding-top: 20px;
+	            border-top: 1px solid rgba(255, 255, 255, 0.1);
+	            color: rgba(255, 255, 255, 0.7);
+	            font-size: 0.9rem;
+	        }
+	        
+	        /* Responsive Design */
+	        @media (max-width: 992px) {
+	            .portal-sections {
+	                gap: 30px;
+	            }
+	            
+	            .portal-title h1 {
+	                font-size: 2.2rem;
+	            }
+	        }
+	        
+	        @media (max-width: 768px) {
+	            .header-container {
+	                flex-direction: column;
+	                gap: 20px;
+	            }
+	            
+	            .portal-sections {
+	                grid-template-columns: 1fr;
+	                gap: 40px;
+	            }
+	            
+	            .portal-title h1 {
+	                font-size: 2rem;
+	            }
+	            
+	            .additional-info {
+	                padding: 30px 25px;
+	            }
+	            
+	            .footer-content {
+	                flex-direction: column;
+	                gap: 25px;
+	                text-align: center;
+	            }
+	            
+	            .footer-links {
+	                justify-content: center;
+	                flex-wrap: wrap;
+	                gap: 20px;
+	            }
+	        }
+	        
+	        @media (max-width: 576px) {
+	            .container {
+	                padding: 0 15px;
+	            }
+	            
+	            .card-header, .card-body {
+	                padding: 25px 20px;
+	            }
+	            
+	            .portal-title h1 {
+	                font-size: 1.8rem;
+	            }
+	            
+	            .additional-info {
+	                padding: 25px 20px;
+	            }
+	        }
+	        
+		/* Onboarding Section Styling - Updated to match other cards */
+		.onboarding-section {
+		    text-align: center;
+		    padding: 30px 20px;
+		}
+		
+		.onboarding-icon {
+		    font-size: 2rem;
+		    color: var(--primary); /* Changed from --secondary to --primary */
+		    margin-bottom: 20px;
+		}
+		
+		.onboarding-title {
+		    font-family: var(--font-heading);
+		    font-size: 1.4rem;
+		    color: var(--dark);
+		    margin-bottom: 15px;
+		    font-weight: 600;
+		}
+		
+		.onboarding-description {
+		    color: var(--dark-gray);
+		    margin-bottom: 25px;
+		    line-height: 1.6;
+		    max-width: 700px;
+		    margin-left: auto;
+		    margin-right: auto;
+		}
+		
+		/* Update the button to match existing portal button styling */
+		.onboarding-button {
+		    text-decoration: none;
+		    display: inline-block;
+		}
+		
+		.onboarding-button:hover {
+		    transform: translateY(-2px);
+		    box-shadow: var(--shadow-md);
+		}
+		
+		.onboarding-info {
+		    color: var(--gray);
+		    margin-top: 25px;
+		    font-size: 0.95rem;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    gap: 8px;
+		}
+		
+		.onboarding-info i {
+		    color: var(--primary); /* Changed from --secondary to --primary */
+		}
+		
+		/* Also update the button class to use primary color instead of register-button's secondary */
+		.onboarding-button.portal-button {
+		    background-color: var(--primary);
+		    color: var(--white);
+		}
+		
+		.onboarding-button.portal-button:hover {
+		    background-color: var(--primary-light);
+		}
+		
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+		    .onboarding-section {
+		        padding: 25px 15px;
+		    }
+		    
+		    .onboarding-icon {
+		        font-size: 1.8rem;
+		        margin-bottom: 15px;
+		    }
+		    
+		    .onboarding-title {
+		        font-size: 1.3rem;
+		        margin-bottom: 12px;
+		    }
+		    
+		    .onboarding-description {
+		        font-size: 0.95rem;
+		        margin-bottom: 20px;
+		        padding: 0 10px;
+		    }
+		}
+	        
+	    </style>
+	</head>
+	<body>
+	    <!-- Header -->
+	    <header class="header">
+	        <div class="container header-container">
+	            <a href="index.html" class="logo">
+	                <i class="fas fa-university logo-icon"></i>
+	                <div class="logo-text">
+	                    <div class="logo-name">Acadryx</div>
+	                    <div class="logo-tagline">School Portal Entry</div>
+	                </div>
+	            </a>
+
+	            <a href="acadryx-school-admin-dashboard.html">
+	            	AFTER ACCESS SCHOOL DASHBOARD OR AUTO
+	            </a>
+
+	            <a href="acadryx-global-account-switcher-component.html">
+	            GLOBAL ACCOUNT SWITCHER
+	            </a>
+	            
+	            <a href="index.html" class="back-link">
+	                <i class="fas fa-arrow-left"></i>
+	                Back to Home
+	            </a>
+	        </div>
+	    </header>
+
+	    <!-- Main Content -->
+	    <main class="main-content">
+	        <div class="container">
+	            <!-- Page Title -->
+	            <div class="portal-title">
+	                <h1>School Administration Portal</h1>
+	                <p>Access your institution's management dashboard or register your school to join the Acadryx platform</p>
+	            </div>
+	            
+	            <!-- Portal Sections -->
+	            <div class="portal-sections">
+
+	    
+
+					<!-- Register New School -->
+					<div class="portal-card login-card">
+					<form class="portal-form" id="registerForm">
+					    <div class="onboarding-section">
+					        <div class="onboarding-icon">
+					            <i class="fas fa-external-link-alt"></i>
+					        </div>
+					        <h3 class="onboarding-title">
+					            Complete Organization Setup
+					        </h3>
+					        <p class="onboarding-description">
+					            We've created a dedicated onboarding process to register your school with Acadryx. 
+					            You'll provide institution details and receive your unique login codes immediately.
+					        </p>
+					        
+					        <a href="school-onboarding-page.html" class="portal-button register-button onboarding-button">
+					            <i class="fas fa-external-link-alt"></i>
+					            Go to School Onboarding
+					        </a>
+					        
+					        <p class="onboarding-info">
+					            <i class="fas fa-info-circle"></i>
+					            You'll be guided through the registration process step by step
+					        </p>
+					    </div>
+					</form>
+					</div>
+	            	
+	                <!-- Existing School Login -->
+	                <div class="portal-card login-card">
+	                    <div class="card-header">
+	                        <i class="fas fa-sign-in-alt card-icon"></i>
+	                        <h2 class="card-title">Existing School Login</h2>
+	                        <p class="card-subtitle">Access your institution's administration dashboard</p>
+	                    </div>
+	                    
+	                    <div class="card-body">
+	                        <form class="portal-form" id="loginForm">
+	                            <div class="form-group">
+	                                <label for="schoolId" class="form-label">
+	                                    School ID / Email
+	                                    <span class="required">*</span>
+	                                </label>
+	                                <input 
+	                                    type="text" 
+	                                    id="schoolId" 
+	                                    class="form-input" 
+	                                    placeholder="admin@yourschool.edu or SCH-2023-ID" 
+	                                    required
+	                                >
+	                                <div class="form-help">
+	                                    <i class="fas fa-info-circle"></i>
+	                                    Use your institutional email or Acadryx School ID
+	                                </div>
+	                            </div>
+	                            
+	                            <div class="form-group">
+	                                <label for="password" class="form-label">
+	                                    Password
+	                                    <span class="required">*</span>
+	                                </label>
+	                                <input 
+	                                    type="password" 
+	                                    id="password" 
+	                                    class="form-input" 
+	                                    placeholder="Enter your password" 
+	                                    required
+	                                >
+	                                <div class="form-help">
+	                                    <i class="fas fa-key"></i>
+	                                    <a href="#" style="color: var(--primary); text-decoration: none;">Forgot password?</a>
+	                                </div>
+	                            </div>
+	                            
+	                            <button type="submit" class="portal-button login-button">
+	                                <i class="fas fa-lock"></i>
+	                                Access School Dashboard
+	                            </button>
+	                        </form>
+	                        
+	                        <div style="text-align: center; margin-top: 20px;">
+	                            <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">
+	                                <i class="fas fa-question-circle"></i>
+	                                Need help accessing your account?
+	                            </a>
+	                        </div>
+	                    </div>
+	                </div>
+	                </main>
+	                <!-- Register New School -->
+
+
+	            <!-- Additional Information -->
+	            <main>
+	            <div class="additional-info">
+	                <h3 class="info-title">Enterprise-Grade School Management</h3>
+	                <p style="text-align: center; color: var(--dark-gray); margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+	                    Acadryx provides comprehensive tools for educational institutions of all sizes, from single-campus schools to multi-branch organizations.
+	                </p>
+	                
+	                <div class="info-grid">
+	                    <div class="info-item">
+	                        <i class="fas fa-shield-alt"></i>
+	                        <h4>Secure & Compliant</h4>
+	                        <p>Enterprise-grade security with compliance for educational data protection regulations (FERPA, GDPR, etc.)</p>
+	                    </div>
+	                    
+	                    <div class="info-item">
+	                        <i class="fas fa-sitemap"></i>
+	                        <h4>Multi-Branch Support</h4>
+	                        <p>Manage multiple campuses, departments, and administrative units from a single dashboard</p>
+	                    </div>
+	                    
+	                    <div class="info-item">
+	                        <i class="fas fa-user-graduate"></i>
+	                        <h4>Student Lifecycle</h4>
+	                        <p>Complete management from enrollment to graduation and alumni transition</p>
+	                    </div>
+	                    
+	                    <div class="info-item">
+	                        <i class="fas fa-chart-bar"></i>
+	                        <h4>Advanced Analytics</h4>
+	                        <p>Comprehensive reporting and data insights for institutional decision-making</p>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </main>
+
+	    <!-- Footer -->
+	    <footer class="footer">
+	        <div class="container">
+	            <div class="footer-content">
+	                <div>
+	                    <div class="footer-logo">Acadryx</div>
+	                    <p class="footer-tagline">Enterprise School Management Platform</p>
+	                </div>
+	                
+	                <div class="footer-links">
+	                    <a href="#" class="footer-link" id="privacyLink">Privacy & Compliance</a>
+	                    <a href="#" class="footer-link" id="termsLink">Institution Agreement</a>
+	                    <a href="#" class="footer-link" id="contactLink">Enterprise Support</a>
+	                </div>
+	            </div>
+	            
+	            <div class="footer-bottom">
+	                <p>&copy; 2023 Acadryx. Institutional accounts are subject to verification and enterprise agreement terms.</p>
+	            </div>
+	        </div>
+	    </footer>
+
+	    <script>
+	        // Login Form Submission
+	        document.getElementById('loginForm').addEventListener('submit', function(e) {
+	            e.preventDefault();
+	            
+	            const schoolId = document.getElementById('schoolId').value;
+	            
+	            alert(`School Login Attempt\n\nSchool ID/Email: ${schoolId || 'Not provided'}\n\nThis would authenticate your school credentials and redirect to your institution's administration dashboard.\n\nNote: In production, this would validate credentials against the backend authentication system and establish a secure admin session.`);
+	            
+	            console.log('School login attempt:', { schoolId });
+	        });
+	        
+	        // Register Form Submission
+	        document.getElementById('registerForm').addEventListener('submit', function(e) {
+	            e.preventDefault();
+	            
+	            const schoolName = document.getElementById('schoolName').value;
+	            const country = document.getElementById('country').value;
+	            const officialEmail = document.getElementById('officialEmail').value;
+	            
+	            alert(`New School Registration Submitted\n\nInstitution: ${schoolName || 'Not provided'}\nCountry: ${country || 'Not provided'}\nEmail: ${officialEmail || 'Not provided'}\n\nStatus: PENDING VERIFICATION\n\nA verification email has been sent to ${officialEmail || 'the provided email'}. Our team will manually verify your institution within 1-3 business days.\n\nNote: In production, this would create a pending institution record and trigger the manual verification workflow.`);
+	            
+	            console.log('New school registration:', { schoolName, country, officialEmail });
+	        });
+	        
+	        // Forgot Password Link
+	        document.querySelector('a[href="#"]').addEventListener('click', function(e) {
+	            e.preventDefault();
+	            alert("Password Reset Process\n\nPlaceholder: This would initiate the school admin password reset flow, sending a secure reset link to the registered institutional email address.");
+	        });
+	        
+	        // Help Link
+	        document.querySelectorAll('a[href="#"]')[1].addEventListener('click', function(e) {
+	            e.preventDefault();
+	            alert("Administrator Support\n\nPlaceholder: This would open the school administrator support portal with documentation, FAQs, and contact options for institutional accounts.");
+	        });
+	        
+	        // Footer Link Interactions
+	        document.getElementById('privacyLink').addEventListener('click', function(e) {
+	            e.preventDefault();
+	            alert("Institutional Privacy & Compliance\n\nPlaceholder: This would open the enterprise privacy policy and compliance documentation specific to educational institutions and data protection regulations.");
+	        });
+	        
+	        document.getElementById('termsLink').addEventListener('click', function(e) {
+	            e.preventDefault();
+	            alert("Institution Agreement\n\nPlaceholder: This would open the enterprise terms of service and institution agreement outlining data ownership, service levels, and institutional responsibilities.");
+	        });
+	        
+	        document.getElementById('contactLink').addEventListener('click', function(e) {
+	            e.preventDefault();
+	            alert("Enterprise Support Contact\n\nPlaceholder: This would display contact information for enterprise support, including dedicated account managers for institutional clients.");
+	        });
+	        
+	        // Update copyright year automatically
+	        document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Acadryx. Institutional accounts are subject to verification and enterprise agreement terms.`;
+	        
+	        // Form validation simulation
+	        document.querySelectorAll('.form-input').forEach(input => {
+	            input.addEventListener('blur', function() {
+	                if (this.value.trim() !== '' && this.id === 'officialEmail') {
+	                    // Simple email format check (visual only)
+	                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	                    if (!emailRegex.test(this.value)) {
+	                        this.style.borderColor = 'var(--accent)';
+	                        console.log('Email format validation would occur here');
+	                    } else {
+	                        this.style.borderColor = 'var(--light-gray)';
+	                    }
+	                }
+	            });
+	        });
+	    </script>
+	</body>
+	</html>

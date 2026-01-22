@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acadryx - School Management & Alumni Network Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Primary color palette - professional, trustworthy */
+            --primary: #1a365d;
+            --primary-light: #2d4a8c;
+            --primary-dark: #0d243f;
+            --secondary: #0c4b33;
+            --secondary-light: #1a7d5e;
+            --accent: #c05621;
+            --accent-light: #dd6b20;
+            
+            /* Neutral palette */
+            --dark: #2d3748;
+            --dark-gray: #4a5568;
+            --gray: #718096;
+            --light-gray: #e2e8f0;
+            --light: #f7fafc;
+            --white: #ffffff;
+            
+            /* UI elements */
+            --border-radius: 6px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+            
+            /* Typography */
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--dark);
+            background-color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-name {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .logo-tagline {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: var(--transition);
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, rgba(26, 54, 93, 0.03) 0%, rgba(12, 75, 51, 0.03) 100%);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: var(--dark-gray);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* CTAs */
+        .cta-section {
+            padding: 30px 0 60px;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .cta-subtitle {
+            color: var(--dark-gray);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 16px 32px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        
+        .btn-school {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-school:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-student {
+            background-color: var(--secondary);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-student:hover {
+            background-color: var(--secondary-light);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Explanation Sections */
+        .explanation-section {
+            padding: 60px 0;
+            background-color: var(--light);
+            border-top: 1px solid var(--light-gray);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .explanation-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 35px 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .explanation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .explanation-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .explanation-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+        
+        .explanation-text {
+            color: var(--dark-gray);
+            line-height: 1.7;
+        }
+        
+        /* Alumni Section */
+        .alumni-section {
+            padding: 60px 0;
+            background-color: var(--white);
+        }
+        
+        .alumni-card {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            border-left: 5px solid var(--accent);
+            box-shadow: var(--shadow);
+        }
+        
+        .alumni-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .alumni-title i {
+            color: var(--accent);
+        }
+        
+        .alumni-text {
+            color: var(--dark-gray);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .alumni-note {
+            background-color: rgba(192, 86, 33, 0.08);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border-left: 3px solid var(--accent);
+            margin-top: 25px;
+        }
+        
+        .alumni-note-title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--light-gray);
+            padding: 50px 0 30px;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        
+        .footer-tagline {
+            color: var(--light-gray);
+            font-size: 0.95rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-link {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-link:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .hero {
+                padding: 60px 0 40px;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .explanation-card {
+                padding: 25px 20px;
+            }
+            
+            .alumni-card {
+                padding: 25px 20px;
+            }
+        }
+
+        /* 
+		Features preview css. . activate when needed
+        */
+
+		.feature-preview {
+		    padding: 80px 0;
+		    background-color: var(--light);
+		    border-top: 1px solid var(--light-gray);
+		    border-bottom: 1px solid var(--light-gray);
+		}
+		
+		.feature-grid {
+		    display: grid;
+		    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		    gap: 30px;
+		    margin-top: 40px;
+		}
+		
+		.feature-card {
+		    background-color: var(--white);
+		    border-radius: var(--border-radius);
+		    padding: 35px 30px;
+		    box-shadow: var(--shadow);
+		    transition: var(--transition);
+		    text-align: center;
+		}
+		
+		.feature-card:hover {
+		    transform: translateY(-8px);
+		    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+		}
+		
+		.feature-icon {
+		    font-size: 2.8rem;
+		    color: var(--primary);
+		    margin-bottom: 20px;
+		}
+		
+		.feature-title {
+		    font-family: var(--font-heading);
+		    font-size: 1.5rem;
+		    color: var(--primary-dark);
+		    margin-bottom: 15px;
+		}
+		
+		.feature-text {
+		    color: var(--dark-gray);
+		    line-height: 1.7;
+		}
+		
+		@media (max-width: 768px) {
+		    .feature-preview {
+		        padding: 60px 0;
+		    }
+		    
+		    .feature-grid {
+		        grid-template-columns: 1fr;
+		        gap: 25px;
+		    }
+		}
+        
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-university logo-icon"></i>
+                <div class="logo-text">
+                    <div class="logo-name">Acadryx</div>
+                    <div class="logo-tagline">School Management & Alumni Network</div>
+                </div>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="acadryx-school-portal-description.html" class="nav-link">For Schools</a>
+                <a href="acadryx-student-portal-description.html" class="nav-link">For Students</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero">
+            <div class="container hero-content">
+                <h1 class="hero-title">The Complete Platform for Educational Institutions</h1>
+                <p class="hero-subtitle">Unified school management, student engagement, and lifelong alumni connections in one secure platform.</p>
+                <p class="hero-description">
+                    Acadryx provides institutions with comprehensive tools for administration, while offering students a seamless educational experience. 
+                    Upon graduation, students automatically transition to alumni status with permanent access to their network and institutional resources.
+                </p>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="cta-title">Get Started with Acadryx</h2>
+                <p class="cta-subtitle">Select your role to access the appropriate portal for your needs</p>
+                
+                <div class="cta-buttons">
+                    <button class="btn btn-school" id="schoolPortalBtn">
+                        <i class="fas fa-school btn-icon"></i>
+                        School Portal
+                        <span style="font-size: 0.9rem; font-weight: normal; margin-top: 5px;">For administrators & staff</span>
+                    </button>
+                    
+                    <button class="btn btn-student" id="studentPortalBtn">
+                        <i class="fas fa-user-graduate btn-icon"></i>
+                        Student Portal
+                        <span style="font-size: 0.9rem; font-weight: normal; margin-top: 5px;">For current students</span>
+                    </button>
+                </div>
+                
+                <p style="color: var(--gray); max-width: 700px; margin: 0 auto;">
+                    <i class="fas fa-info-circle" style="color: var(--accent); margin-right: 8px;"></i>
+                    Not sure which portal to use? <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">Contact your institution</a> for guidance.
+                </p>
+            </div>
+        </section>
+
+        <!-- features preview Sections -->
+		<section class="feature-preview">
+		    <div class="container">
+		        <h2 class="section-title">What Acadryx Offers Your School Family</h2>
+		        
+		        <div class="feature-grid">
+		            <div class="feature-card">
+		                <!-- <i class="fas fa-newspaper feature-icon"></i> -->
+		                <h3 class="feature-title">One-Click School Magazine</h3>
+		                <p class="feature-text">Celebrate your school's story together. Students submit, teachers curate, and beautiful digital yearbooks appear—at near-zero cost, preserving every memory.</p>
+		            </div>
+		            
+		            <div class="feature-card">
+		                <!-- <i class="fas fa-chart-bar feature-icon"></i> -->
+		                <h3 class="feature-title">One-Click School Results</h3>
+		                <p class="feature-text">Teachers enter scores, the system does the rest. Get instant, accurate report cards and transcripts—turning days of manual work into minutes of automated joy.</p>
+		            </div>
+		            
+		            <div class="feature-card">
+		               <!-- <i class="fas fa-chart-line feature-icon"></i> -->
+		                <h3 class="feature-title">Academic Journey Tracking</h3>
+		                <p class="feature-text">Watch students grow and succeed. Track progress, celebrate milestones, and provide support right when it's needed most throughout their educational journey.</p>
+		            </div>
+		            
+		            <div class="feature-card">
+		                <!--<i class="fas fa-network-wired feature-icon"></i> -->
+		                <h3 class="feature-title">Living Alumni Network</h3>
+		                <p class="feature-text">Graduation is just the beginning. Keep your school family connected for life with a network that grows stronger with every graduating class.</p>
+		            </div>
+		        </div>
+		    </div>
+		</section>
+
+        <!-- Alumni Section -->
+        <section class="alumni-section">
+            <div class="container">
+                <div class="alumni-card">
+                    <h3 class="alumni-title">
+                        <i class="fas fa-lock"></i>
+                        Alumni Account Access
+                    </h3>
+                    
+                    <p class="alumni-text">
+                        <strong>Alumni accounts are created automatically upon graduation.</strong> There is no separate registration process for alumni status. When a student completes their program, their account automatically transitions to alumni status with additional features and permanent access.
+                    </p>
+                    
+                    <p class="alumni-text">
+                        If you are a graduate trying to access alumni features but your account hasn't been transitioned yet, please contact your institution's administration to verify your graduation status.
+                    </p>
+                    
+                    <div class="alumni-note">
+                        <div class="alumni-note-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Important Notice
+                        </div>
+                        <p style="color: var(--dark-gray);">
+                            Alumni-specific features (networking, career resources, giving portals) are locked until graduation verification is complete. Current students can access these features once their graduation is confirmed by their institution.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Acadryx</div>
+                    <p class="footer-tagline">School Management & Alumni Network Platform</p>
+                </div>
+                
+                <div class="footer-links">
+                	<a href="acadryx-developer-console.html">
+                		A-DEV-CONSOLE
+                	</a>
+                	
+                    <a href="#" class="footer-link" id="privacyLink">Privacy Policy</a>
+                    <a href="#" class="footer-link" id="termsLink">Terms of Service</a>
+                    <a href="#" class="footer-link" id="contactLink">Contact Us</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Acadryx. All rights reserved. This platform is designed for educational institutions and their communities.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Button Interactions
+        document.getElementById("schoolPortalBtn").addEventListener
+            ("click", () => 
+                { 
+                	window.location.href = "acadryx-school-portal-entry-page.html" 
+                 }
+            );
+        
+        
+        
+        document.getElementById('studentPortalBtn').addEventListener(
+        	"click", () => 
+        		{
+        			window.location.href = "acadryx-student-entry-page.html"
+        		}
+        );
+                
+        // Footer Link Interactions
+        document.getElementById('privacyLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Privacy Policy page would open here.\n\nPlaceholder: This is a demonstration of link behavior. In production, this would link to the actual privacy policy page.");
+        });
+        
+        document.getElementById('termsLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Terms of Service page would open here.\n\nPlaceholder: This is a demonstration of link behavior. In production, this would link to the actual terms of service page.");
+        });
+        
+        document.getElementById('contactLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Contact page would open here.\n\nPlaceholder: This is a demonstration of link behavior. In production, this would link to the contact form or contact information page.");
+        });
+        
+        // Navigation Link Interactions
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const linkText = this.textContent;
+                alert(`${linkText} section would be displayed here.\n\nPlaceholder: In production, this would navigate to the appropriate section or page.`);
+            });
+        });
+        
+        // Update copyright year automatically
+        document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Acadryx. All rights reserved. This platform is designed for educational institutions and their communities.`;
+    </script>
+</body>
+</html>

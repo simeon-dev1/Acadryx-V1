@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | Acadryx</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2d4a8c;
+            --secondary: #0c4b33;
+            --accent: #c05621;
+            --dark: #2d3748;
+            --gray: #718096;
+            --light: #f7fafc;
+            --white: #ffffff;
+            --border-radius: 6px;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--dark); line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        .header { background: var(--white); padding: 20px 0; border-bottom: 1px solid #e2e8f0; }
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        .hero { text-align: center; padding: 60px 0; background: linear-gradient(135deg, rgba(26,54,93,0.03) 0%, rgba(12,75,51,0.03) 100%); }
+        .hero-icon { font-size: 4rem; color: var(--primary); margin-bottom: 20px; }
+        .hero h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; }
+        .hero p { font-size: 1.2rem; color: var(--dark); max-width: 700px; margin: 0 auto; }
+        
+        .section { padding: 60px 0; }
+        .section-title { font-size: 2rem; color: var(--primary); margin-bottom: 30px; text-align: center; }
+        
+        .content-box { background: var(--white); padding: 30px; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 30px; }
+        .content-box h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; }
+        .content-box p { color: var(--gray); margin-bottom: 15px; }
+        
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
+        .feature { background: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--shadow); border-left: 4px solid var(--secondary); }
+        .feature-icon { font-size: 2rem; color: var(--secondary); margin-bottom: 15px; }
+        .feature h4 { color: var(--dark); margin-bottom: 10px; }
+        
+        .btn { display: inline-block; padding: 14px 28px; background: var(--primary); color: white; text-decoration: none; border-radius: var(--border-radius); font-weight: 600; margin-top: 20px; transition: 0.2s; }
+        .btn:hover { background: var(--primary-light); transform: translateY(-2px); }
+        
+        .footer { background: var(--primary); color: white; padding: 40px 0; text-align: center; margin-top: 60px; }
+        .footer a { color: white; text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .section-title { font-size: 1.7rem; }
+            .features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <span>Acadryx</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <i class="fas fa-user-graduate hero-icon"></i>
+            <h1>Student Portal</h1>
+            <p>Access your academic resources, connect with classmates, and prepare for your transition to alumni status.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Portal Overview</h2>
+            
+            <div class="content-box">
+                <h3>Your Academic Hub</h3>
+                <p>The Acadryx Student Portal provides current students with access to school resources, course materials, projects, and a preview of alumni features that will unlock upon graduation.</p>
+                <p>During your enrollment, use the portal to manage your academic journey, stay updated with school announcements, and connect with your educational community.</p>
+            </div>
+            
+            <h2 class="section-title" style="margin-top: 60px;">Key Features</h2>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-bullhorn feature-icon"></i>
+                    <h4>School Announcements</h4>
+                    <p>View important updates, event schedules, and academic deadlines from your institution.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-users feature-icon"></i>
+                    <h4>Classmate Connections</h4>
+                    <p>Connect with peers in your classes and join study groups within your school network.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-newspaper feature-icon"></i>
+                    <h4>School Magazine</h4>
+                    <p>Access the latest editions of your school's publications and student work highlights.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <h4>Academic Progress</h4>
+                    <p>Track your coursework, grades, and academic milestones throughout your enrollment.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-lock feature-icon"></i>
+                    <h4>Future Alumni Access</h4>
+                    <p>Preview alumni features that will automatically unlock when your graduation is confirmed.</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-project-diagram feature-icon"></i>
+                    <h4>Project Submissions</h4>
+                    <p>Submit assignments and projects through the portal for faculty review and grading.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="index.html" class="btn">
+                    <i class="fas fa-home"></i> Back to Homepage
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Acadryx Student Portal • Student accounts provide access during enrollment</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Alumni status granted automatically upon graduation</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Admin Dashboard | Acadryx</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Primary color palette - enterprise, trustworthy */
+            --primary: #1a365d;
+            --primary-light: #2d4a8c;
+            --primary-dark: #0d243f;
+            --secondary: #0c4b33;
+            --secondary-light: #1a7d5e;
+            --accent: #c05621;
+            --accent-light: #dd6b20;
+            
+            /* Neutral palette */
+            --dark: #2d3748;
+            --dark-gray: #4a5568;
+            --gray: #718096;
+            --light-gray: #e2e8f0;
+            --light: #f7fafc;
+            --white: #ffffff;
+            
+            /* Status colors */
+            --pending: #d69e2e;
+            --pending-light: #fefcbf;
+            --success: #38a169;
+            --success-light: #c6f6d5;
+            --disabled: #a0aec0;
+            --disabled-light: #edf2f7;
+            
+            /* UI elements */
+            --border-radius: 8px;
+            --border-radius-sm: 6px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+            
+            /* Typography */
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--dark);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Demo Banner */
+        .demo-banner {
+            background: linear-gradient(90deg, var(--pending) 0%, var(--accent) 100%);
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(214, 158, 46, 0.3);
+        }
+        
+        .demo-banner i {
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-name {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .logo-tagline {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .school-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .admin-btn {
+            padding: 10px 18px;
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-btn:hover {
+            background-color: var(--light-gray);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard {
+            padding: 30px 0;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .dashboard-subtitle {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dashboard-subtitle i {
+            color: var(--success);
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .card-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .card-title-container {
+            flex: 1;
+        }
+        
+        .card-icon {
+            font-size: 2.2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 15px;
+        }
+        
+        .school-profile .card-icon {
+            background-color: rgba(26, 54, 93, 0.1);
+            color: var(--primary);
+        }
+        
+        .branch-management .card-icon {
+            background-color: rgba(12, 75, 51, 0.1);
+            color: var(--secondary);
+        }
+        
+        .student-management .card-icon {
+            background-color: rgba(192, 86, 33, 0.1);
+            color: var(--accent);
+        }
+        
+        .magazine-publishing .card-icon {
+            background-color: rgba(123, 52, 30, 0.1);
+            color: #7b341e;
+        }
+        
+        .alumni-overview .card-icon {
+            background-color: rgba(116, 42, 116, 0.1);
+            color: #742a74;
+        }
+        
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .card-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .card-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-active {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+        
+        .status-disabled {
+            background-color: var(--disabled-light);
+            color: var(--disabled);
+        }
+        
+        .status-readonly {
+            background-color: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+        }
+        
+        .card-body {
+            padding: 25px;
+            flex: 1;
+        }
+        
+        /* Profile Card Specific */
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .profile-label {
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+        
+        .profile-value {
+            color: var(--dark);
+        }
+        
+        /* Management Sections */
+        .management-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .management-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1rem;
+        }
+        
+        .action-btn.enabled {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .action-btn.enabled:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .action-btn.disabled {
+            background-color: var(--disabled-light);
+            color: var(--disabled);
+            cursor: not-allowed;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .action-btn.readonly {
+            background-color: var(--light);
+            color: var(--dark-gray);
+            cursor: default;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .action-icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Alumni Section Specific */
+        .alumni-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .alumni-stat {
+            text-align: center;
+            padding: 15px 10px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .alumni-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .alumni-stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .alumni-graduation-year {
+            margin-top: 20px;
+        }
+        
+        .graduation-year-title {
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .year-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .year-item {
+            padding: 8px 15px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.9rem;
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--light-gray);
+            padding: 40px 0 25px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .footer-link {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        
+        .footer-link:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard-title {
+                font-size: 1.9rem;
+            }
+            
+            .alumni-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .admin-info {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .school-name {
+                width: 100%;
+            }
+            
+            .admin-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .management-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .dashboard-title {
+                font-size: 1.7rem;
+            }
+            
+            .card-header, .card-body {
+                padding: 20px;
+            }
+            
+            .alumni-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        <i class="fas fa-exclamation-triangle"></i>
+        DEMO / PLACEHOLDER MODE - All actions are disabled. Backend not connected yet.
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-university logo-icon"></i>
+                <div class="logo-text">
+                    <div class="logo-name">Acadryx</div>
+                    <div class="logo-tagline">School Administration</div>
+                </div>
+            </a>
+            
+            <div class="admin-info">
+                <div class="school-name">
+                    <i class="fas fa-school"></i>
+                    Greenwood High School
+                </div>
+                
+                <div class="admin-actions">
+                    <button class="admin-btn" id="adminSettingsBtn">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </button>
+                    <button class="admin-btn" id="adminHelpBtn">
+                        <i class="fas fa-question-circle"></i>
+                        Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <main class="dashboard">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">School Administration Dashboard</h1>
+                <div class="dashboard-subtitle">
+                    <i class="fas fa-check-circle"></i>
+                    Verified Institution • Last updated: Today, 10:42 AM
+                </div>
+            </div>
+            
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- School Profile Card -->
+                <div class="dashboard-card school-profile">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <h2 class="card-title">School Profile</h2>
+                            <p class="card-subtitle">Institution information & settings</p>
+                        </div>
+                        <div class="card-status status-active">Active</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="profile-info">
+                            <div class="profile-item">
+                                <span class="profile-label">Institution Name:</span>
+                                <span class="profile-value">Greenwood High School</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="profile-label">Institution ID:</span>
+                                <span class="profile-value">SCH-2023-GHS-01</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="profile-label">Country:</span>
+                                <span class="profile-value">United States</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="profile-label">Verification Status:</span>
+                                <span class="profile-value" style="color: var(--success); font-weight: 600;">Verified</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="profile-label">Primary Contact:</span>
+                                <span class="profile-value">admin@greenwood.edu</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="profile-label">Students:</span>
+                                <span class="profile-value">1,247</span>
+                            </div>
+                            <div class="profile-item">
+                                <span class="profile-label">Alumni:</span>
+                                <span class="profile-value">8,563</span>
+                            </div>
+                        </div>
+                        
+                        <div class="management-actions">
+                            <button class="action-btn enabled" id="editProfileBtn">
+                                <span>Edit School Profile</span>
+                                <i class="fas fa-edit action-icon"></i>
+                            </button>
+                            <button class="action-btn enabled" id="manageAdminsBtn">
+                                <span>Manage Administrators</span>
+                                <i class="fas fa-user-cog action-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Branch Management Card -->
+                <div class="dashboard-card branch-management">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <h2 class="card-title">Branch Management</h2>
+                            <p class="card-subtitle">Manage multiple campuses & departments</p>
+                        </div>
+                        <div class="card-status status-disabled">Disabled</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="management-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Active Branches</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">1</div>
+                                <div class="stat-label">Main Campus</div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: var(--dark-gray); margin-bottom: 20px; font-size: 0.95rem;">
+                            Manage multiple campuses, departments, and administrative units from a single dashboard.
+                        </p>
+                        
+                        <div class="management-actions">
+                            <button class="action-btn disabled" id="addBranchBtn">
+                                <span>Add New Branch</span>
+                                <i class="fas fa-plus-circle action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="manageBranchesBtn">
+                                <span>View All Branches</span>
+                                <i class="fas fa-list action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="branchSettingsBtn">
+                                <span>Branch Settings</span>
+                                <i class="fas fa-cog action-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Student Management Card -->
+                <div class="dashboard-card student-management">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h2 class="card-title">Student Management</h2>
+                            <p class="card-subtitle">Enrollment, classes, and records</p>
+                        </div>
+                        <div class="card-status status-disabled">Disabled</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="management-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">1,247</div>
+                                <div class="stat-label">Total Students</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">42</div>
+                                <div class="stat-label">Active Classes</div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: var(--dark-gray); margin-bottom: 20px; font-size: 0.95rem;">
+                            Manage student enrollments, class assignments, academic records, and graduation processing.
+                        </p>
+                        
+                        <div class="management-actions">
+                            <button class="action-btn disabled" id="addStudentBtn">
+                                <span>Add New Student</span>
+                                <i class="fas fa-user-plus action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="manageStudentsBtn">
+                                <span>Student Directory</span>
+                                <i class="fas fa-address-book action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="graduationBtn">
+                                <span>Process Graduation</span>
+                                <i class="fas fa-graduation-cap action-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Magazine Publishing Card -->
+                <div class="dashboard-card magazine-publishing">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h2 class="card-title">Magazine Publishing</h2>
+                            <p class="card-subtitle">School publications & newsletters</p>
+                        </div>
+                        <div class="card-status status-disabled">Disabled</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="management-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Published Issues</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Drafts</div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: var(--dark-gray); margin-bottom: 20px; font-size: 0.95rem;">
+                            Create and distribute school magazines, newsletters, and announcements to students, parents, and alumni.
+                        </p>
+                        
+                        <div class="management-actions">
+                            <button class="action-btn disabled" id="createMagazineBtn">
+                                <span>Create New Issue</span>
+                                <i class="fas fa-plus action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="viewMagazinesBtn">
+                                <span>View All Publications</span>
+                                <i class="fas fa-eye action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="distributionBtn">
+                                <span>Distribution Settings</span>
+                                <i class="fas fa-paper-plane action-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alumni Overview Card -->
+                <div class="dashboard-card alumni-overview">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <h2 class="card-title">Alumni Overview</h2>
+                            <p class="card-subtitle">Graduate network & engagement</p>
+                        </div>
+                        <div class="card-status status-readonly">Read-Only</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="alumni-stats">
+                            <div class="alumni-stat">
+                                <div class="alumni-stat-value">8,563</div>
+                                <div class="alumni-stat-label">Total Alumni</div>
+                            </div>
+                            <div class="alumni-stat">
+                                <div class="alumni-stat-value">64%</div>
+                                <div class="alumni-stat-label">Active Network</div>
+                            </div>
+                            <div class="alumni-stat">
+                                <div class="alumni-stat-value">312</div>
+                                <div class="alumni-stat-label">2023 Graduates</div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: var(--dark-gray); margin-bottom: 20px; font-size: 0.95rem;">
+                            Alumni accounts are created automatically upon graduation. View network engagement and alumni contributions.
+                        </p>
+                        
+                        <div class="alumni-graduation-year">
+                            <div class="graduation-year-title">Recent Graduation Years</div>
+                            <div class="year-list">
+                                <div class="year-item">2023</div>
+                                <div class="year-item">2022</div>
+                                <div class="year-item">2021</div>
+                                <div class="year-item">2020</div>
+                                <div class="year-item">2019</div>
+                                <div class="year-item">2018</div>
+                            </div>
+                        </div>
+                        
+                        <div class="management-actions" style="margin-top: 25px;">
+                            <button class="action-btn readonly" id="viewAlumniBtn">
+                                <span>View Alumni Directory (Read-Only)</span>
+                                <i class="fas fa-users action-icon"></i>
+                            </button>
+                            <button class="action-btn disabled" id="alumniEngagementBtn">
+                                <span>Alumni Engagement Tools</span>
+                                <i class="fas fa-chart-line action-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Note -->
+            <div style="background-color: var(--light); border-radius: var(--border-radius); padding: 25px; margin-top: 30px; border-left: 4px solid var(--pending);">
+                <div style="display: flex; align-items: flex-start; gap: 15px;">
+                    <i class="fas fa-info-circle" style="color: var(--pending); font-size: 1.5rem; margin-top: 2px;"></i>
+                    <div>
+                        <h3 style="color: var(--dark); margin-bottom: 10px; font-size: 1.2rem;">Dashboard Functionality Note</h3>
+                        <p style="color: var(--dark-gray); margin-bottom: 10px;">
+                            This dashboard is currently in <strong>Demo / Placeholder Mode</strong>. The following sections are disabled and require backend integration:
+                        </p>
+                        <ul style="color: var(--dark-gray); margin-left: 20px; margin-bottom: 15px;">
+                            <li>Branch Management</li>
+                            <li>Student Management</li>
+                            <li>Magazine Publishing</li>
+                            <li>Alumni Engagement Tools</li>
+                        </ul>
+                        <p style="color: var(--dark-gray);">
+                            The School Profile section has limited functionality. Alumni Overview is read-only. All data displayed is placeholder information for demonstration purposes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Acadryx</div>
+                    <p class="footer-tagline">School Administration Dashboard - Demo Version</p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="privacyLink">Privacy & Compliance</a>
+                    <a href="#" class="footer-link" id="termsLink">Administrator Agreement</a>
+                    <a href="#" class="footer-link" id="contactLink">Technical Support</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Acadryx. Dashboard in demo mode. Backend integration required for full functionality.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Demo banner reminder
+        console.log("School Admin Dashboard - DEMO MODE");
+        console.log("All backend-dependent features are disabled.");
+        
+        // Function to show disabled feature alert
+        function showDisabledAlert(featureName) {
+            alert(`Feature Disabled: ${featureName}\n\nBackend not connected yet.\n\nIn production, this would connect to the backend API to ${featureName.toLowerCase()}.`);
+        }
+        
+        // Function to show enabled feature alert
+        function showEnabledAlert(featureName) {
+            alert(`Feature: ${featureName}\n\nIn production, this would open the ${featureName.toLowerCase()} interface.`);
+        }
+        
+        // Header button actions
+        document.getElementById('adminSettingsBtn').addEventListener('click', function() {
+            showEnabledAlert("Admin Settings");
+        });
+        
+        document.getElementById('adminHelpBtn').addEventListener('click', function() {
+            showEnabledAlert("Help & Documentation");
+        });
+        
+        // School Profile actions
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            showEnabledAlert("Edit School Profile");
+        });
+        
+        document.getElementById('manageAdminsBtn').addEventListener('click', function() {
+            showEnabledAlert("Manage Administrators");
+        });
+        
+        // Branch Management actions (disabled)
+        document.getElementById('addBranchBtn').addEventListener('click', function() {
+            showDisabledAlert("Add New Branch");
+        });
+        
+        document.getElementById('manageBranchesBtn').addEventListener('click', function() {
+            showDisabledAlert("View All Branches");
+        });
+        
+        document.getElementById('branchSettingsBtn').addEventListener('click', function() {
+            showDisabledAlert("Branch Settings");
+        });
+        
+        // Student Management actions (disabled)
+        document.getElementById('addStudentBtn').addEventListener('click', function() {
+            showDisabledAlert("Add New Student");
+        });
+        
+        document.getElementById('manageStudentsBtn').addEventListener('click', function() {
+            showDisabledAlert("Student Directory");
+        });
+        
+        document.getElementById('graduationBtn').addEventListener('click', function() {
+            showDisabledAlert("Process Graduation");
+        });
+        
+        // Magazine Publishing actions (disabled)
+        document.getElementById('createMagazineBtn').addEventListener('click', function() {
+            showDisabledAlert("Create New Magazine Issue");
+        });
+        
+        document.getElementById('viewMagazinesBtn').addEventListener('click', function() {
+            showDisabledAlert("View All Publications");
+        });
+        
+        document.getElementById('distributionBtn').addEventListener('click', function() {
+            showDisabledAlert("Distribution Settings");
+        });
+        
+        // Alumni Overview actions
+        document.getElementById('viewAlumniBtn').addEventListener('click', function() {
+            alert("Alumni Directory (Read-Only)\n\nIn production, this would display a read-only directory of alumni with graduation year and basic contact information.\n\nNote: Full alumni management requires backend integration.");
+        });
+        
+        document.getElementById('alumniEngagementBtn').addEventListener('click', function() {
+            showDisabledAlert("Alumni Engagement Tools");
+        });
+        
+        // Footer link actions
+        document.getElementById('privacyLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Privacy & Compliance\n\nPlaceholder: This would open the institutional privacy policy and compliance documentation.");
+        });
+        
+        document.getElementById('termsLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Administrator Agreement\n\nPlaceholder: This would open the administrator terms of service and user agreement.");
+        });
+        
+        document.getElementById('contactLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Technical Support\n\nPlaceholder: This would open the technical support portal for school administrators.");
+        });
+        
+        // Update copyright year automatically
+        document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Acadryx. Dashboard in demo mode. Backend integration required for full functionality.`;
+        
+        // Simulate loading data (placeholder)
+        setTimeout(() => {
+            console.log("Dashboard data loaded (simulated)");
+        }, 1000);
+    </script>
+</body>
+</html>

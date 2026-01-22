@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Switcher Component | Acadryx</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Color palette - professional, subtle */
+            --primary: #1a365d;
+            --primary-light: #2d4a8c;
+            --primary-dark: #0d243f;
+            --secondary: #0c4b33;
+            --secondary-light: #1a7d5e;
+            --accent: #c05621;
+            
+            /* Neutral palette */
+            --dark: #2d3748;
+            --dark-gray: #4a5568;
+            --gray: #718096;
+            --light-gray: #e2e8f0;
+            --light: #f7fafc;
+            --white: #ffffff;
+            
+            /* Status colors */
+            --active: #38a169;
+            --active-light: #c6f6d5;
+            --locked: #a0aec0;
+            --locked-light: #edf2f7;
+            
+            /* UI elements */
+            --border-radius: 6px;
+            --border-radius-sm: 4px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+            
+            /* Typography */
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--dark);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Component Demo Header */
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .demo-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .demo-subtitle {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+        }
+        
+        /* Account Switcher Component */
+        .account-switcher {
+            width: 100%;
+            max-width: 320px;
+            position: relative;
+        }
+        
+        /* Switcher Toggle Button */
+        .switcher-toggle {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            box-shadow: var(--shadow);
+        }
+        
+        .switcher-toggle:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .switcher-toggle:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+        }
+        
+        .toggle-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .account-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .account-student .account-icon {
+            background-color: rgba(26, 54, 93, 0.1);
+            color: var(--primary);
+        }
+        
+        .account-alumni .account-icon {
+            background-color: rgba(160, 174, 192, 0.1);
+            color: var(--locked);
+        }
+        
+        .account-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .account-type {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+        
+        .account-status {
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+        
+        .status-active {
+            color: var(--active);
+        }
+        
+        .status-locked {
+            color: var(--locked);
+        }
+        
+        .toggle-arrow {
+            color: var(--gray);
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        
+        .switcher-toggle.open .toggle-arrow {
+            transform: rotate(180deg);
+        }
+        
+        /* Switcher Dropdown */
+        .switcher-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            overflow: hidden;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        
+        .switcher-dropdown.open {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .account-option {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--light-gray);
+            position: relative;
+        }
+        
+        .account-option:last-child {
+            border-bottom: none;
+        }
+        
+        .account-option:hover {
+            background-color: var(--light);
+        }
+        
+        .account-option.active {
+            background-color: rgba(56, 161, 105, 0.05);
+            border-left: 3px solid var(--active);
+        }
+        
+        .account-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .account-option.disabled:hover {
+            background-color: var(--white);
+        }
+        
+        .option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        
+        .option-student .option-icon {
+            background-color: rgba(26, 54, 93, 0.1);
+            color: var(--primary);
+        }
+        
+        .option-alumni .option-icon {
+            background-color: rgba(160, 174, 192, 0.1);
+            color: var(--locked);
+        }
+        
+        .option-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .option-type {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .option-desc {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            margin-top: 4px;
+        }
+        
+        .option-status {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .status-indicator-active {
+            background-color: var(--active-light);
+            color: var(--active);
+        }
+        
+        .status-indicator-locked {
+            background-color: var(--locked-light);
+            color: var(--locked);
+        }
+        
+        .option-check {
+            color: var(--active);
+            font-size: 1.1rem;
+        }
+        
+        /* Tooltip for Locked Option */
+        .option-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 10px 14px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .option-tooltip:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--dark) transparent transparent transparent;
+        }
+        
+        .account-option.disabled:hover .option-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Demo Sections */
+        .demo-section {
+            margin-top: 60px;
+            width: 100%;
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .demo-layouts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .layout-preview {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .layout-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .layout-title i {
+            color: var(--primary);
+        }
+        
+        /* Header Layout Preview */
+        .header-preview {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--light-gray);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-logo {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+        
+        /* Footer Layout Preview */
+        .footer-preview {
+            background-color: var(--primary-dark);
+            color: var(--light-gray);
+            padding: 25px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-weight: 700;
+            color: var(--white);
+            font-size: 1.3rem;
+        }
+        
+        /* Instructions */
+        .instructions {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 50px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .instructions h3 {
+            font-family: var(--font-heading);
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .demo-layouts {
+                grid-template-columns: 1fr;
+            }
+            
+            .account-switcher {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .demo-title {
+                font-size: 1.8rem;
+            }
+            
+            .layout-preview {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Demo Header -->
+        <div class="demo-header">
+            <h1 class="demo-title">Acadryx Account Switcher</h1>
+            <p class="demo-subtitle">Global component for switching between student and alumni accounts</p>
+        </div>
+        
+        <!-- Account Switcher Component -->
+        <div class="account-switcher">
+            <!-- Switcher Toggle Button -->
+            <button class="switcher-toggle" id="switcherToggle">
+                <div class="toggle-content">
+                    <div class="account-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="account-info">
+                        <div class="account-type">Student Account</div>
+                        <div class="account-status status-active">
+                            <i class="fas fa-circle" style="font-size: 0.6rem;"></i> Currently Active
+                        </div>
+                    </div>
+                </div>
+                <div class="toggle-arrow">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </button>
+            
+            <!-- Switcher Dropdown -->
+            <div class="switcher-dropdown" id="switcherDropdown">
+                <!-- Student Account Option -->
+                <div class="account-option option-student active" id="studentOption">
+                    <div class="option-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="option-info">
+                        <div class="option-type">
+                            Student Account
+                            <span class="option-status status-indicator-active">Active</span>
+                        </div>
+                        <div class="option-desc">Current enrollment access & academic tools</div>
+                    </div>
+                    <div class="option-check">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                
+                <!-- Alumni Account Option -->
+                <div class="account-option option-alumni disabled" id="alumniOption">
+                    <div class="option-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="option-info">
+                        <div class="option-type">
+                            Alumni Account
+                            <span class="option-status status-indicator-locked">Locked</span>
+                        </div>
+                        <div class="option-desc">Network, career resources & mentorship</div>
+                    </div>
+                    <div class="option-check">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    
+                    <!-- Tooltip -->
+                    <div class="option-tooltip">
+                        Available after graduation confirmation
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Demo Sections -->
+        <div class="demo-section">
+            <h2 class="section-title">Component Placement Examples</h2>
+            
+            <div class="demo-layouts">
+                <!-- Header Placement -->
+                <div class="layout-preview">
+                    <h3 class="layout-title">
+                        <i class="fas fa-header"></i>
+                        Header Placement
+                    </h3>
+                    
+                    <div class="header-preview">
+                        <div class="header-logo">Acadryx</div>
+                        <div class="account-switcher" style="max-width: 280px;">
+                            <button class="switcher-toggle" style="padding: 10px 14px;">
+                                <div class="toggle-content">
+                                    <div class="account-icon" style="width: 32px; height: 32px; font-size: 1rem;">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <div class="account-info">
+                                        <div class="account-type" style="font-size: 0.95rem;">Student Account</div>
+                                    </div>
+                                </div>
+                                <div class="toggle-arrow">
+                                    <i class="fas fa-chevron-down" style="font-size: 0.9rem;"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p style="color: var(--dark-gray); font-size: 0.95rem;">
+                        Compact version for header placement. Shows current account with dropdown for switching.
+                    </p>
+                </div>
+                
+                <!-- Footer Placement -->
+                <div class="layout-preview">
+                    <h3 class="layout-title">
+                        <i class="fas fa-window-minimize"></i>
+                        Footer Placement
+                    </h3>
+                    
+                    <div class="footer-preview">
+                        <div class="footer-content">
+                            <div class="footer-logo">Acadryx</div>
+                            <div class="account-switcher" style="max-width: 260px;">
+                                <button class="switcher-toggle" style="background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: white;">
+                                    <div class="toggle-content">
+                                        <div class="account-icon" style="width: 30px; height: 30px; font-size: 0.9rem; background-color: rgba(255, 255, 255, 0.2);">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                        <div class="account-info">
+                                            <div class="account-type" style="font-size: 0.9rem; color: white;">Student Account</div>
+                                        </div>
+                                    </div>
+                                    <div class="toggle-arrow" style="color: rgba(255, 255, 255, 0.8);">
+                                        <i class="fas fa-chevron-down" style="font-size: 0.9rem;"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="color: var(--dark-gray); font-size: 0.95rem;">
+                        Dark theme version for footer placement. Adapts to footer styling while maintaining functionality.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>Component Usage & Behavior</h3>
+            <ul>
+                <li><strong>Student Account:</strong> Always active during enrollment. Shows current academic tools and resources.</li>
+                <li><strong>Alumni Account:</strong> Locked until graduation confirmation. Shows tooltip explanation on hover.</li>
+                <li><strong>Automatic Transition:</strong> Alumni account activates automatically when graduation is confirmed by the institution.</li>
+                <li><strong>State Persistence:</strong> Once alumni account is active, users can switch between student (read-only) and alumni (full access) views.</li>
+            </ul>
+            <p style="color: var(--dark-gray);">
+                This component is designed to be placed in the global header or footer of the Acadryx application, providing consistent account switching functionality across all pages.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dropdown
+        const switcherToggle = document.getElementById('switcherToggle');
+        const switcherDropdown = document.getElementById('switcherDropdown');
+        
+        switcherToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('open');
+            switcherDropdown.classList.toggle('open');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!switcherToggle.contains(e.target) && !switcherDropdown.contains(e.target)) {
+                switcherToggle.classList.remove('open');
+                switcherDropdown.classList.remove('open');
+            }
+        });
+        
+        // Handle account option clicks
+        const studentOption = document.getElementById('studentOption');
+        const alumniOption = document.getElementById('alumniOption');
+        
+        // Student option - switch to student view
+        studentOption.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                // Already active, just close dropdown
+                switcherToggle.classList.remove('open');
+                switcherDropdown.classList.remove('open');
+                return;
+            }
+            
+            // In production, this would switch to student view
+            alert("Switching to Student Account\n\nIn production, this would change the UI to student view with academic tools and resources.\n\nNote: If you're viewing as an alumnus, student view would be read-only for historical records.");
+            
+            // Update UI to show student as active
+            studentOption.classList.add('active');
+            alumniOption.classList.remove('active');
+            
+            // Update toggle button
+            updateToggleButton('student');
+            
+            // Close dropdown
+            switcherToggle.classList.remove('open');
+            switcherDropdown.classList.remove('open');
+        });
+        
+        // Alumni option - show locked message
+        alumniOption.addEventListener('click', function() {
+            if (this.classList.contains('disabled')) {
+                // Show explanation for locked state
+                alert("Alumni Account Locked\n\nThis account will activate automatically upon graduation confirmation by your institution.\n\nOnce active, you'll have access to:\n• Alumni networking\n• Career resources & job board\n• Mentorship programs\n• Lifelong institutional connection\n\nNo action is required - this transition happens automatically.");
+                return;
+            }
+            
+            // If not disabled, switch to alumni view (for demo when active)
+            if (!this.classList.contains('active')) {
+                alert("Switching to Alumni Account\n\nIn production, this would change the UI to alumni view with networking, career resources, and mentorship tools.");
+                
+                // Update UI to show alumni as active
+                studentOption.classList.remove('active');
+                alumniOption.classList.add('active');
+                
+                // Update toggle button
+                updateToggleButton('alumni');
+                
+                // Close dropdown
+                switcherToggle.classList.remove('open');
+                switcherDropdown.classList.remove('open');
+            }
+        });
+        
+        // Function to update toggle button based on active account
+        function updateToggleButton(accountType) {
+            const toggleContent = switcherToggle.querySelector('.toggle-content');
+            
+            if (accountType === 'student') {
+                toggleContent.innerHTML = `
+                    <div class="account-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="account-info">
+                        <div class="account-type">Student Account</div>
+                        <div class="account-status status-active">
+                            <i class="fas fa-circle" style="font-size: 0.6rem;"></i> Currently Active
+                        </div>
+                    </div>
+                `;
+                
+                // Update alumni option to remove disabled state (for demo when alumni is active)
+                alumniOption.classList.remove('disabled');
+                alumniOption.querySelector('.option-check').innerHTML = '<i class="fas fa-unlock"></i>';
+                alumniOption.querySelector('.option-status').textContent = 'Available';
+                alumniOption.querySelector('.option-status').className = 'option-status status-indicator-active';
+            } else if (accountType === 'alumni') {
+                toggleContent.innerHTML = `
+                    <div class="account-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="account-info">
+                        <div class="account-type">Alumni Account</div>
+                        <div class="account-status status-active">
+                            <i class="fas fa-circle" style="font-size: 0.6rem;"></i> Currently Active
+                        </div>
+                    </div>
+                `;
+                
+                // Update student option (would be read-only for alumni)
+                studentOption.querySelector('.option-status').textContent = 'Read-Only';
+            }
+        }
+        
+        // Demo: Simulate alumni account activation after graduation
+        const simulateGraduationBtn = document.createElement('button');
+        simulateGraduationBtn.innerHTML = '<i class="fas fa-graduation-cap"></i> Simulate Graduation (Demo Only)';
+        simulateGraduationBtn.style.cssText = `
+            margin-top: 30px;
+            padding: 12px 20px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 320px;
+        `;
+        
+        simulateGraduationBtn.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'var(--secondary-light)';
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        simulateGraduationBtn.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = 'var(--secondary)';
+            this.style.transform = 'translateY(0)';
+        });
+        
+        simulateGraduationBtn.addEventListener('click', function() {
+            if (confirm("Demo: Simulate graduation confirmation?\n\nThis will unlock the alumni account for demonstration purposes.\n\nIn production, this would happen automatically when your institution confirms your graduation.")) {
+                // Activate alumni account
+                alumniOption.classList.remove('disabled');
+                alumniOption.querySelector('.option-check').innerHTML = '<i class="fas fa-unlock"></i>';
+                alumniOption.querySelector('.option-status').textContent = 'Available';
+                alumniOption.querySelector('.option-status').className = 'option-status status-indicator-active';
+                
+                alert("Graduation confirmed!\n\nYour alumni account is now available. You can switch between student (read-only) and alumni views.\n\nNote: In production, your student account would become read-only for accessing historical records, while alumni features would be fully unlocked.");
+                
+                // Update button text
+                this.innerHTML = '<i class="fas fa-check"></i> Alumni Account Unlocked (Demo)';
+                this.style.backgroundColor = 'var(--active)';
+                this.disabled = true;
+            }
+        });
+        
+        // Add demo button to container
+        document.querySelector('.account-switcher').parentNode.appendChild(simulateGraduationBtn);
+        
+        // Log component state
+        console.log("Account Switcher Component Loaded");
+        console.log("Current state: Student account active, Alumni account locked");
+    </script>
+</body>
+</html>

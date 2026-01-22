@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Entry - Join Your School | Acadryx</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Primary color palette - professional, trustworthy */
+            --primary: #1a365d;
+            --primary-light: #2d4a8c;
+            --primary-dark: #0d243f;
+            --secondary: #0c4b33;
+            --secondary-light: #1a7d5e;
+            --accent: #c05621;
+            --accent-light: #dd6b20;
+            
+            /* Neutral palette */
+            --dark: #2d3748;
+            --dark-gray: #4a5568;
+            --gray: #718096;
+            --light-gray: #e2e8f0;
+            --light: #f7fafc;
+            --white: #ffffff;
+            
+            /* UI elements */
+            --border-radius: 6px;
+            --border-radius-sm: 4px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+            
+            /* Typography */
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--dark);
+            background-color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-name {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .logo-tagline {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-light);
+            gap: 12px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(26, 54, 93, 0.02) 0%, rgba(12, 75, 51, 0.02) 100%);
+        }
+        
+        .student-entry-container {
+            width: 100%;
+            max-width: 550px;
+        }
+        
+        .entry-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .entry-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .entry-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .entry-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .entry-subtitle {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+        }
+        
+        /* Form */
+        .entry-form {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+        
+        .form-label .optional {
+            font-weight: normal;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            color: var(--dark);
+            transition: var(--transition);
+            background-color: var(--light);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(12, 75, 51, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: var(--gray);
+        }
+        
+        .form-help {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+        
+        .form-help i {
+            color: var(--accent);
+        }
+        
+        /* Button */
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--secondary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .submit-button:hover {
+            background-color: var(--secondary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .submit-button:active {
+            transform: translateY(0);
+        }
+        
+        /* Information Cards */
+        .info-cards {
+            display: grid;
+            gap: 25px;
+        }
+        
+        .info-card {
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border-left: 4px solid;
+        }
+        
+        .info-card.school {
+            border-left-color: var(--secondary);
+        }
+        
+        .info-card.alumni {
+            border-left-color: var(--accent);
+        }
+        
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .info-card.school .info-card-icon {
+            color: var(--secondary);
+        }
+        
+        .info-card.alumni .info-card-icon {
+            color: var(--accent);
+        }
+        
+        .info-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        .info-card-text {
+            color: var(--dark-gray);
+            line-height: 1.7;
+        }
+        
+        .info-card-text ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .info-card-text li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .info-card-text li:before {
+            content: "•";
+            color: var(--secondary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--light-gray);
+            padding: 40px 0 25px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .footer-link {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        
+        .footer-link:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .entry-card {
+                padding: 30px 25px;
+            }
+            
+            .entry-title {
+                font-size: 1.9rem;
+            }
+            
+            .entry-subtitle {
+                font-size: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .entry-card {
+                padding: 25px 20px;
+            }
+            
+            .entry-title {
+                font-size: 1.7rem;
+            }
+            
+            .info-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-university logo-icon"></i>
+                <div class="logo-text">
+                    <div class="logo-name">Acadryx</div>
+                    <div class="logo-tagline">Student Entry Portal</div>
+                </div>
+            </a>
+
+            <a href="acadryx-student-dashboard.html">
+            	AFTER JOIN YOUR SCHOOL, PWA
+            </a>
+            
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="student-entry-container">
+                <!-- Entry Form Card -->
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <i class="fas fa-user-graduate entry-icon"></i>
+                        <h1 class="entry-title">Join Your School</h1>
+                        <p class="entry-subtitle">Enter your school-issued code to access your student account</p>
+                    </div>
+                    
+                    <form class="entry-form" id="studentEntryForm">
+                        <div class="form-group">
+                            <label for="schoolCode" class="form-label">
+                                School Code
+                                <span class="optional">(provided by your school)</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="schoolCode" 
+                                class="form-input" 
+                                placeholder="e.g., SCH-2023-ABCDE" 
+                                required
+                            >
+                            <div class="form-help">
+                                <i class="fas fa-info-circle"></i>
+                                This unique code is provided by your school administration or teacher
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                class="form-input" 
+                                placeholder="Your full name as registered with your school" 
+                                required
+                            >
+                            <div class="form-help">
+                                <i class="fas fa-info-circle"></i>
+                                Use your official name as it appears in school records
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                Email Address
+                                <span class="optional">(optional)</span>
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-input" 
+                                placeholder="student@example.com or parent@example.com"
+                            >
+                            <div class="form-help">
+                                <i class="fas fa-info-circle"></i>
+                                Guardian/parent email is allowed for younger students
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="submit-button">
+                            <i class="fas fa-check-circle"></i>
+                            Join Your School
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; color: var(--gray); font-size: 0.95rem;">
+                        <i class="fas fa-shield-alt" style="margin-right: 8px;"></i>
+                        Your information is secure and will only be shared with your educational institution
+                    </div>
+                </div>
+                
+                <!-- Information Cards -->
+                <div class="info-cards">
+                    <!-- School Code Explanation -->
+                    <div class="info-card school">
+                        <div class="info-card-header">
+                            <i class="fas fa-school info-card-icon"></i>
+                            <h3 class="info-card-title">About School Codes</h3>
+                        </div>
+                        <div class="info-card-text">
+                            <p>Your school code is a unique identifier that connects you to your educational institution within the Acadryx platform.</p>
+                            <ul>
+                                <li>Obtain your code from your school administrator, teacher, or enrollment materials</li>
+                                <li>Each code is specific to your school and academic year</li>
+                                <li>Codes are case-sensitive and typically include both letters and numbers</li>
+                                <li>If you've lost your code, contact your school's administration office</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Alumni Access Explanation -->
+                    <div class="info-card alumni">
+                        <div class="info-card-header">
+                            <i class="fas fa-lock info-card-icon"></i>
+                            <h3 class="info-card-title">Alumni Access Timeline</h3>
+                        </div>
+                        <div class="info-card-text">
+                            <p><strong>Alumni features unlock automatically after graduation.</strong> As a current student, you have access to academic resources, course materials, and school communication tools.</p>
+                            
+                            <p>Upon graduation confirmation by your school, your account will automatically transition to alumni status with these benefits:</p>
+                            <ul>
+                                <li>Permanent account access (no expiration)</li>
+                                <li>Lifelong networking with classmates</li>
+                                <li>Career resources and job boards</li>
+                                <li>Continued access to certain institutional resources</li>
+                                <li>Alumni event invitations</li>
+                            </ul>
+                            
+                            <p style="margin-top: 15px; padding: 12px; background-color: rgba(192, 86, 33, 0.08); border-radius: var(--border-radius-sm);">
+                                <i class="fas fa-exclamation-circle" style="color: var(--accent); margin-right: 8px;"></i>
+                                <strong>Note:</strong> Alumni-specific features remain locked until your graduation is officially recorded in your school's system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Acadryx</div>
+                    <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">Student Entry Portal</div>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="privacyLink">Privacy Policy</a>
+                    <a href="#" class="footer-link" id="termsLink">Terms of Service</a>
+                    <a href="#" class="footer-link" id="contactLink">Contact Support</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Acadryx. Student information is managed in accordance with educational privacy regulations.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form Submission
+        document.getElementById('studentEntryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const schoolCode = document.getElementById('schoolCode').value;
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            
+            // Show placeholder alert
+            alert(`Student Entry Submitted\n\nSchool Code: ${schoolCode || 'Not provided'}\nFull Name: ${fullName || 'Not provided'}\nEmail: ${email || 'Not provided'}\n\nThis would verify your school code and create your student profile.\n\nNote: In production, this would validate the school code with the backend, create a student account, and send verification instructions.`);
+            
+            // In a real implementation, this would be an API call
+            console.log('Student entry form submitted:', { schoolCode, fullName, email });
+            
+            // Clear form (optional, for demonstration)
+            // document.getElementById('studentEntryForm').reset();
+        });
+        
+        // Footer Link Interactions
+        document.getElementById('privacyLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Student Privacy Policy\n\nPlaceholder: This would open the student-specific privacy policy page detailing how student data is collected, used, and protected in accordance with educational privacy laws (FERPA, COPPA, etc.).");
+        });
+        
+        document.getElementById('termsLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Student Terms of Service\n\nPlaceholder: This would open the terms of service specific to student accounts, outlining acceptable use, data ownership, and account management policies.");
+        });
+        
+        document.getElementById('contactLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Student Support Contact\n\nPlaceholder: This would open a contact form or display support contact information for students needing assistance with account setup or technical issues.");
+        });
+        
+        // Form input guidance
+        document.getElementById('schoolCode').addEventListener('focus', function() {
+            console.log('School code field focused - in production, might show examples of valid formats');
+        });
+        
+        // Update copyright year automatically
+        document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Acadryx. Student information is managed in accordance with educational privacy regulations.`;
+    </script>
+</body>
+</html>

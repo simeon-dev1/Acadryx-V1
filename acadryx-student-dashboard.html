@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Acadryx</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Primary color palette - student-focused but serious */
+            --primary: #2c5282;
+            --primary-light: #4299e1;
+            --primary-dark: #1a365d;
+            --secondary: #276749;
+            --secondary-light: #48bb78;
+            --accent: #dd6b20;
+            --accent-light: #ed8936;
+            
+            /* Neutral palette */
+            --dark: #2d3748;
+            --dark-gray: #4a5568;
+            --gray: #718096;
+            --light-gray: #e2e8f0;
+            --light: #f7fafc;
+            --white: #ffffff;
+            
+            /* Status colors */
+            --pending: #d69e2e;
+            --pending-light: #fefcbf;
+            --success: #38a169;
+            --success-light: #c6f6d5;
+            --disabled: #a0aec0;
+            --disabled-bg: #f7fafc;
+            
+            /* UI elements */
+            --border-radius: 8px;
+            --border-radius-sm: 6px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.2s ease;
+            
+            /* Typography */
+            --font-heading: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--dark);
+            background-color: #f5f7fa;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 18px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-right: 12px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-name {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        
+        .logo-tagline {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 3px;
+            letter-spacing: 0.5px;
+        }
+        
+        .student-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .student-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .header-btn {
+            padding: 10px 18px;
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .header-btn:hover {
+            background-color: var(--light-gray);
+        }
+        
+        /* Dashboard Layout */
+        .dashboard {
+            padding: 30px 0;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+        
+        .welcome-title {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .welcome-subtitle {
+            color: var(--dark-gray);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .welcome-subtitle i {
+            color: var(--success);
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .card-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .card-title-container {
+            flex: 1;
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 12px;
+        }
+        
+        .student-profile .card-icon {
+            background-color: rgba(44, 82, 130, 0.1);
+            color: var(--primary);
+        }
+        
+        .school-feed .card-icon {
+            background-color: rgba(66, 153, 225, 0.1);
+            color: var(--primary-light);
+        }
+        
+        .magazine-preview .card-icon {
+            background-color: rgba(221, 107, 32, 0.1);
+            color: var(--accent);
+        }
+        
+        .alumni-card .card-icon {
+            background-color: rgba(160, 174, 192, 0.1);
+            color: var(--disabled);
+        }
+        
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .card-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        
+        .card-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-active {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+        
+        .status-disabled {
+            background-color: var(--disabled-bg);
+            color: var(--disabled);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .card-body {
+            padding: 25px;
+            flex: 1;
+        }
+        
+        /* Profile Card */
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .profile-info h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .profile-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .profile-detail {
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .profile-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .profile-btn.primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .profile-btn.primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .profile-btn.secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .profile-btn.secondary:hover {
+            background-color: var(--light-gray);
+        }
+        
+        /* School Feed Card */
+        .feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .feed-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            border: 2px dashed var(--light-gray);
+            text-align: center;
+        }
+        
+        .feed-placeholder-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 15px;
+        }
+        
+        .feed-placeholder-text {
+            color: var(--gray);
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        
+        .feed-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .feed-post {
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .post-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .post-date {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .post-content {
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+        
+        .feed-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .feed-btn {
+            padding: 12px 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .feed-btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        /* Magazine Preview Card */
+        .magazine-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .magazine-preview-item {
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .magazine-preview-item:hover {
+            box-shadow: var(--shadow);
+        }
+        
+        .magazine-cover {
+            height: 180px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .magazine-info {
+            padding: 20px;
+        }
+        
+        .magazine-title {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .magazine-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .magazine-desc {
+            color: var(--dark-gray);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .magazine-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .magazine-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .magazine-btn.primary {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+        
+        .magazine-btn.primary:hover {
+            background-color: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .magazine-btn.secondary {
+            background-color: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .magazine-btn.secondary:hover {
+            background-color: var(--light-gray);
+        }
+        
+        /* Alumni Card - Locked */
+        .alumni-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            height: 100%;
+            text-align: center;
+            opacity: 0.7;
+        }
+        
+        .alumni-lock-icon {
+            font-size: 4rem;
+            color: var(--disabled);
+            margin-bottom: 20px;
+        }
+        
+        .alumni-lock-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .alumni-lock-text {
+            color: var(--dark-gray);
+            max-width: 400px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .alumni-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+            text-align: left;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .alumni-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: var(--light);
+            border-radius: var(--border-radius-sm);
+            border-left: 3px solid var(--disabled);
+        }
+        
+        .alumni-feature i {
+            color: var(--disabled);
+            font-size: 1.2rem;
+        }
+        
+        .alumni-btn {
+            padding: 14px 30px;
+            background-color: var(--disabled-bg);
+            color: var(--disabled);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: not-allowed;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* Grid Layout Assignments */
+        .student-profile {
+            grid-column: span 4;
+        }
+        
+        .school-feed {
+            grid-column: span 5;
+        }
+        
+        .magazine-preview {
+            grid-column: span 3;
+        }
+        
+        .alumni-card {
+            grid-column: span 12;
+            margin-top: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--primary-dark);
+            color: var(--light-gray);
+            padding: 40px 0 25px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .footer-link {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        
+        .footer-link:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .student-profile {
+                grid-column: span 6;
+            }
+            
+            .school-feed {
+                grid-column: span 6;
+            }
+            
+            .magazine-preview {
+                grid-column: span 12;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .student-profile,
+            .school-feed,
+            .magazine-preview,
+            .alumni-card {
+                grid-column: span 1;
+            }
+            
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .student-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .student-name {
+                width: 100%;
+            }
+            
+            .header-btns {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .welcome-title {
+                font-size: 1.9rem;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 25px;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .welcome-title {
+                font-size: 1.7rem;
+            }
+            
+            .card-header, .card-body {
+                padding: 20px;
+            }
+            
+            .profile-actions,
+            .feed-actions,
+            .magazine-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-university logo-icon"></i>
+                <div class="logo-text">
+                    <div class="logo-name">Acadryx</div>
+                    <div class="logo-tagline">Student Dashboard</div>
+                </div>
+            </a>
+            
+            <div class="student-actions">
+                <div class="student-name">
+                    <i class="fas fa-user-graduate"></i>
+                    Alex Johnson • Class of 2024
+                </div>
+                
+                <div class="header-btns">
+                    <button class="header-btn" id="notificationsBtn">
+                        <i class="fas fa-bell"></i>
+                        Notifications
+                    </button>
+                    <button class="header-btn" id="helpBtn">
+                        <i class="fas fa-question-circle"></i>
+                        Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <main class="dashboard">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1 class="welcome-title">Welcome back, Alex</h1>
+                <div class="welcome-subtitle">
+                    <i class="fas fa-school"></i>
+                    Greenwood High School • Student ID: STU-2024-GHS-0427
+                </div>
+            </div>
+            
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Student Profile Card -->
+                <div class="dashboard-card student-profile">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <h2 class="card-title">My Profile</h2>
+                            <p class="card-subtitle">Your academic information & settings</p>
+                        </div>
+                        <div class="card-status status-active">Active</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="profile-container">
+                            <div class="profile-header">
+                                <div class="profile-avatar">AJ</div>
+                                <div class="profile-info">
+                                    <h3>Alex Johnson</h3>
+                                    <p>Senior • Class of 2024</p>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-details">
+                                <div class="profile-detail">
+                                    <span class="detail-label">Student ID</span>
+                                    <span class="detail-value">STU-2024-GHS-0427</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span class="detail-label">Grade Level</span>
+                                    <span class="detail-value">12th Grade</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span class="detail-label">Graduation Year</span>
+                                    <span class="detail-value">2024</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span class="detail-label">GPA</span>
+                                    <span class="detail-value">3.8</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span class="detail-label">School Email</span>
+                                    <span class="detail-value">alex.j@student.greenwood.edu</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span class="detail-label">Enrollment Status</span>
+                                    <span class="detail-value" style="color: var(--success);">Active</span>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-actions">
+                                <button class="profile-btn primary" id="editProfileBtn">
+                                    <i class="fas fa-edit"></i>
+                                    Edit Profile
+                                </button>
+                                <button class="profile-btn secondary" id="academicRecordsBtn">
+                                    <i class="fas fa-file-alt"></i>
+                                    Academic Records
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- School Feed Card -->
+                <div class="dashboard-card school-feed">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h2 class="card-title">School Feed</h2>
+                            <p class="card-subtitle">Updates, announcements & events</p>
+                        </div>
+                        <div class="card-status status-active">Active</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="feed-container">
+                            <div class="feed-posts">
+                                <div class="feed-post">
+                                    <div class="post-header">
+                                        <div class="post-title">Final Exam Schedule Released</div>
+                                        <div class="post-date">May 15, 2023</div>
+                                    </div>
+                                    <div class="post-content">
+                                        The final exam schedule for Spring semester is now available. Check your student portal for your personalized schedule.
+                                    </div>
+                                </div>
+                                
+                                <div class="feed-post">
+                                    <div class="post-header">
+                                        <div class="post-title">College Fair This Friday</div>
+                                        <div class="post-date">May 12, 2023</div>
+                                    </div>
+                                    <div class="post-content">
+                                        Representatives from over 50 colleges will be in the gymnasium this Friday from 9 AM to 3 PM. Bring your questions!
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="feed-actions">
+                                <button class="feed-btn" id="viewAllUpdatesBtn">
+                                    <i class="fas fa-stream"></i>
+                                    View All Updates
+                                </button>
+                                <button class="feed-btn" id="calendarBtn">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    School Calendar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Magazine Preview Card -->
+                <div class="dashboard-card magazine-preview">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h2 class="card-title">School Magazine</h2>
+                            <p class="card-subtitle">Latest publications</p>
+                        </div>
+                        <div class="card-status status-active">Active</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="magazine-container">
+                            <div class="magazine-preview-item">
+                                <div class="magazine-cover">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="magazine-info">
+                                    <div class="magazine-title">Spring 2023 Edition</div>
+                                    <div class="magazine-date">Published: April 28, 2023</div>
+                                    <div class="magazine-desc">
+                                        Featuring senior spotlights, spring sports highlights, and college acceptance announcements.
+                                    </div>
+                                    <div class="magazine-actions">
+                                        <button class="magazine-btn primary" id="readMagazineBtn">
+                                            <i class="fas fa-book-reader"></i>
+                                            Read Now
+                                        </button>
+                                        <button class="magazine-btn secondary" id="archiveBtn">
+                                            <i class="fas fa-archive"></i>
+                                            Archive
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alumni Card (Locked) -->
+                <div class="dashboard-card alumni-card">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <h2 class="card-title">Alumni Network</h2>
+                            <p class="card-subtitle">Graduate connections & resources</p>
+                        </div>
+                        <div class="card-status status-disabled">Locked</div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="alumni-container">
+                            <div class="alumni-lock-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h3 class="alumni-lock-title">Available After Graduation</h3>
+                            <p class="alumni-lock-text">
+                                The alumni network unlocks automatically once your graduation is confirmed by your school. This provides permanent access to career resources, networking, and lifelong connections.
+                            </p>
+                            
+                            <div class="alumni-features">
+                                <div class="alumni-feature">
+                                    <i class="fas fa-users"></i>
+                                    <span>Network with alumni from your school</span>
+                                </div>
+                                <div class="alumni-feature">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>Career resources & job board</span>
+                                </div>
+                                <div class="alumni-feature">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Alumni events & reunions</span>
+                                </div>
+                                <div class="alumni-feature">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Professional development resources</span>
+                                </div>
+                            </div>
+                            
+                            <button class="alumni-btn" id="alumniPreviewBtn">
+                                <i class="fas fa-eye"></i>
+                                Preview Alumni Features
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Note -->
+            <div style="background-color: var(--light); border-radius: var(--border-radius); padding: 25px; margin-top: 30px; border-left: 4px solid var(--primary);">
+                <div style="display: flex; align-items: flex-start; gap: 15px;">
+                    <i class="fas fa-info-circle" style="color: var(--primary); font-size: 1.5rem; margin-top: 2px;"></i>
+                    <div>
+                        <h3 style="color: var(--dark); margin-bottom: 10px; font-size: 1.2rem;">Student Dashboard Information</h3>
+                        <p style="color: var(--dark-gray); margin-bottom: 10px;">
+                            This dashboard provides access to your academic information, school updates, and publications. The <strong>Alumni Network</strong> section remains locked until graduation is confirmed by your school administration.
+                        </p>
+                        <p style="color: var(--dark-gray);">
+                            Your student account will automatically transition to alumni status upon graduation, providing permanent access to networking and career resources.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Acadryx</div>
+                    <p class="footer-tagline">Student Dashboard • Class of 2024</p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="studentResourcesLink">Student Resources</a>
+                    <a href="#" class="footer-link" id="academicCalendarLink">Academic Calendar</a>
+                    <a href="#" class="footer-link" id="studentSupportLink">Student Support</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Acadryx. Student accounts provide access during enrollment. Alumni access granted upon graduation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header button actions
+        document.getElementById('notificationsBtn').addEventListener('click', function() {
+            alert("Notifications\n\nIn production, this would show your school announcements, assignment deadlines, and event reminders.");
+        });
+        
+        document.getElementById('helpBtn').addEventListener('click', function() {
+            alert("Student Help & Support\n\nIn production, this would open the student help center with FAQs, contact information, and troubleshooting guides.");
+        });
+        
+        // Profile actions
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            alert("Edit Profile\n\nIn production, this would allow you to update your contact information, privacy settings, and notification preferences.");
+        });
+        
+        document.getElementById('academicRecordsBtn').addEventListener('click', function() {
+            alert("Academic Records\n\nIn production, this would display your grades, transcripts, attendance records, and course history.");
+        });
+        
+        // School feed actions
+        document.getElementById('viewAllUpdatesBtn').addEventListener('click', function() {
+            alert("All School Updates\n\nIn production, this would show a complete feed of school announcements, events, and important dates.");
+        });
+        
+        document.getElementById('calendarBtn').addEventListener('click', function() {
+            alert("School Calendar\n\nIn production, this would open the interactive school calendar with events, holidays, and assignment deadlines.");
+        });
+        
+        // Magazine actions
+        document.getElementById('readMagazineBtn').addEventListener('click', function() {
+            alert("Read Magazine\n\nIn production, this would open the Spring 2023 edition of the school magazine in a reader view.");
+        });
+        
+        document.getElementById('archiveBtn').addEventListener('click', function() {
+            alert("Magazine Archive\n\nIn production, this would show all previous editions of the school magazine available for reading.");
+        });
+        
+        // Alumni locked button
+        document.getElementById('alumniPreviewBtn').addEventListener('click', function() {
+            alert("Alumni Network - Locked\n\nThis feature is only available after graduation.\n\nWhen you graduate, your student account will automatically transition to alumni status with these benefits:\n\n• Permanent account access\n• Networking with alumni from your school\n• Career resources and job board\n• Alumni events and reunions\n• Professional development resources\n\nYour graduation must be confirmed by your school administration before alumni features unlock.");
+        });
+        
+        // Footer link actions
+        document.getElementById('studentResourcesLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Student Resources\n\nPlaceholder: This would open the student resources page with study materials, tutoring information, and academic support.");
+        });
+        
+        document.getElementById('academicCalendarLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Academic Calendar\n\nPlaceholder: This would open the full academic calendar with important dates for the school year.");
+        });
+        
+        document.getElementById('studentSupportLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert("Student Support\n\nPlaceholder: This would open the student support portal with counseling services, technical help, and contact information.");
+        });
+        
+        // Update copyright year automatically
+        document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Acadryx. Student accounts provide access during enrollment. Alumni access granted upon graduation.`;
+        
+        // Simulate student-specific interactions
+        console.log("Student Dashboard loaded for Alex Johnson (Class of 2024)");
+        console.log("Alumni features locked - graduation pending");
+    </script>
+</body>
+</html>
